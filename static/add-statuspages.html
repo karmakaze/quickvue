@@ -29,7 +29,7 @@ function on_submit(e) {
     'statusPageUrl': statusPageUrl
   };
   console.log('about to post data: ' + JSON.stringify(data));
-  axios.post('http://api.statuspages.me:8080/services', data);
+  axios.post('http://api.statuspages.me:8880/services', data);
   return false;
 }
 </script>
