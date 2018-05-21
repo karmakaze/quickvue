@@ -1,0 +1,64 @@
+<html>
+<head>
+</head>
+<body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+function on_search(e) {
+  var name = document.getElementById('name').value.trim();
+  var id = name.toLowerCase().replace(/ +/g, '-');
+  document.getElementById('id').value = id;
+  document.getElementById('twitterHandle').value = '';
+  document.getElementById('statusPageUrl').value = '';
+
+  name = name.replace(/ +/g, '+');
+  document.getElementById('left').src = 'https://www.google.ca/search?q=' + name + '+status+twitter';
+  document.getElementById('right').src = 'https://www.google.ca/search?q=' + name + '+status-page';
+  return false;
+}
+function on_submit(e) {
+  var id = document.getElementById('id').value.trim();
+  var name = document.getElementById('name').value.trim();
+  var twitterHandle = document.getElementById('twitterHandle').value.trim();
+  var statusPageUrl = document.getElementById('statusPageUrl').value.trim();
+
+  var data = {
+    'id': id,
+    'name': name,
+    'twitterHandle': twitterHandle,
+    'statusPageUrl': statusPageUrl
+  };
+  console.log('about to post data: ' + JSON.stringify(data));
+  axios.post('http://api.statuspages.me:8080/services', data);
+  return false;
+}
+</script>
+<table>
+  <tr>
+    <td>
+      <form id="search_form" onsubmit="return on_search(this)">
+      <table>
+      <tr><td align="center">Name:</td><td><input id="name" name="name" size="30"/></td></tr>
+      <tr><td></td><td align="center"><input type="submit" value="Search"/></td></tr>
+      </table>
+      </form>
+    </td>
+    <td>
+      <form id="submit_form" onsubmit="return on_submit(this)">
+      <table>
+      <tr><td align="right">id:</td><td><input id="id" name="id" size="30"/></td></tr>
+      <tr><td align="right">Twitter:</td><td><input id="twitterHandle" name="twitterHandle" size="30"/></td></tr>
+      <tr><td>Status page:</td><td><input id="statusPageUrl" name="statusPageUrl" size="30"/></td></tr>
+      <tr><td></td><td align="center"><input type="submit" value="Submit"/></td></tr>
+      </table>
+      </form>
+    </td>
+  </tr>
+</table>
+
+<div style="width: 100%; display: flex; flex-direction: row;">
+  <iframe id="left" name="left" width="50%" height="80%" style="display: flex;"></iframe>
+  <iframe id="right" name="right" width="50%" height="80%" style="display: flex;"></iframe>
+</div>
+</body>
+</html>
