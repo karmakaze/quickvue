@@ -50,7 +50,7 @@ export default {
       }
       this.search_source = this.$axios.CancelToken.source()
 
-      var url = 'http://statuspages.me:8080/services'
+      var url = 'http://statuspages.me:8880/services'
       var headers = {}
       // if (authorization) {
       //   headers = { 'Authorization': authorization }

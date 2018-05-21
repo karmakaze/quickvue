@@ -60,7 +60,7 @@ export default {
     },
     checkForm (e) {
       if (this.id && this.name && this.statusPageUrl) {
-        this.$axios.post('http://statuspages.me:8080/services', {
+        this.$axios.post('http://statuspages.me:8880/services', {
                       'id': this.id,
                       'name': this.name,
                       'twitterHandle': this.twitterHandle,
