@@ -53,7 +53,7 @@ export default {
       var self = this
       this.$axios.get(url, { headers: headers })
                  .then(response => {
-                    if (response.data && response.data.length) {
+                    if (response && response.data && response.data.length) {
                       self.status = response.data[0]
                     } else {
                       self.status = { status: '' }
