@@ -4,7 +4,7 @@
     <td style="min-width: 160px">{{ status.name }} {{ firstLine(status.status) }}</td>
     <td><text-value :type="'age'" :value="status.createdAt"></text-value></td>
     <td align="center"><text-value :type="'twitter'" :value="service.twitterHandle"></text-value></td>
-    <td><text-value :type="'link'" :value="service.statusPageUrl"></text-value></td>
+    <td><text-value :type="'link'" :value="status.statusPageUrl"></text-value></td>
   </tr>
 </template>
 

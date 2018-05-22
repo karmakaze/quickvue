@@ -7,7 +7,7 @@
           <th>Status</th>
           <th>Since</th>
           <th>Twitter</th>
-          <th>Status Page</th>
+          <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status Page</th>
         </tr>
         <template v-for="service of services">
           <service-card :service="service" :key="service.id"></service-card>
@@ -53,7 +53,15 @@ export default {
       this.$axios.get(url, { headers: headers,
                              cancelToken: this.search_source.token })
                  .then(response => {
-                    this.services = response.data
+                    var services = response.data || []
+                    services.sort((a, b) => {
+                      var aName = a.name.toLowerCase()
+                      var bName = b.name.toLowerCase()
+                      if (aName < bName) return -1
+                      if (aName > bName) return 1
+                      return 0
+                    })
+                    this.services = services
                   })
     }
   }
