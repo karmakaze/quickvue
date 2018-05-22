@@ -1,5 +1,6 @@
 <template>
   <div style="width: 100%">
+    <div><h2>StatusPages.me</h2></div>
     <div class="services" style="width: 100%">
       <table>
         <tr>
