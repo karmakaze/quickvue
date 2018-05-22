@@ -33,7 +33,7 @@ export default {
       var ms = Date.now() - d.getTime()
       var days = Math.floor(ms / 86400000)
       var hours = Math.floor((ms - days * 86400000) / 3600000)
-      var minutes = Math.ceil((ms - days * 86400000 - hours * 3600000) / 60000)
+      var minutes = Math.floor((ms - days * 86400000 - hours * 3600000) / 60000)
       var age = ''
       if (days) {
         age = age + ' ' + days + 'd'
