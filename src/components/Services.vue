@@ -1,27 +1,23 @@
 <template>
   <div style="width: 100%">
     <div class="services" style="width: 100%">
-      <template v-for="service of services">
-        <service-card :service="service" :key="service.id"></service-card>
-      </template>
-    </div>
-    <div>
-      <service-add></service-add>
+      <table>
+        <tr>
+          <th>Service</th>
+          <th>Status</th>
+          <th>Since</th>
+          <th>Twitter</th>
+          <th>Status Page</th>
+        </tr>
+        <template v-for="service of services">
+          <service-card :service="service" :key="service.id"></service-card>
+        </template>
+      </table>
     </div>
   </div>
 </template>
 
 <script>
-const isLocalHost = ['localhost', '127.0.0.1', '::1'].includes(location.hostname)
-function debug (line) {
-  if (isLocalHost) {
-    if (typeof line === 'function') {
-      line = line()
-    }
-    console.log(line)
-  }
-}
-
 export default {
   created () {
     this.load()
@@ -37,13 +33,10 @@ export default {
     }
   },
   methods: {
-    load () {
-      this.loadGithub(() => {})
-    },
     selected (item) {
       this.selecteditem = item
     },
-    loadGithub (callback) {
+    load () {
       if (this.search_source) {
         this.search_source.cancel('cancel search due to newer request')
         this.search_source = null
@@ -61,8 +54,6 @@ export default {
                              cancelToken: this.search_source.token })
                  .then(response => {
                     this.services = response.data
-                    debug('got services response body: ' + JSON.stringify(this.services))
-                    callback()
                   })
     }
   }

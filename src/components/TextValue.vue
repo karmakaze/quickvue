@@ -1,12 +1,15 @@
 <template>
   <span>
-    <template v-if="type === 'date'">{{new Date(Date.parse(value)).toLocaleDateString('en-CA')}}</template>
-    <template v-else-if="type === 'datetime'">{{new Date(Date.parse(value)).toISOString().replace('T', ' ')}}</template>
-    <template v-else-if="type === 'image' && isValidUrl(value)"><img :src="value" /></template>
-    <template v-else-if="type === 'link' && isValidUrl(value)"><a :href="value">{{value}}</a></template>
-    <template v-else-if="type === 'twitter'"><a :href="twitterUrl(value)">{{twitterHandle(value)}}</a></template>
-    <template v-else-if="typeof type === 'function'">{{ type('text', value) }}</template>
-    <template v-else>{{value}}</template>
+    <template v-if="value">
+      <template v-if="type === 'date'">{{ new Date(Date.parse(value)).toLocaleDateString('en-CA') }}</template>
+      <template v-else-if="type === 'datetime'">{{ new Date(Date.parse(value)).toISOString().replace('T', ' ') }}</template>
+      <template v-else-if="type === 'age'">{{ age(new Date(Date.parse(value))) }}</template>
+      <template v-else-if="type === 'image' && isValidUrl(value)"><img :src="value" /></template>
+      <template v-else-if="type === 'link' && isValidUrl(value)"><a :href="value">{{value}}</a></template>
+      <template v-else-if="type === 'twitter'"><a :href="twitterUrl(value)">{{ twitterHandle(value) }}</a></template>
+      <template v-else-if="typeof type === 'function'">{{ type('text', value) }}</template>
+      <template v-else>{{value}}</template>
+    </template>
   </span>
 </template>
 
@@ -25,6 +28,23 @@ export default {
     },
     twitterUrl (handle) {
       return handle ? 'https://twitter.com/' + handle.replace(/^@+/, '') : ''
+    },
+    age (d) {
+      var ms = Date.now() - d.getTime()
+      var days = Math.floor(ms / 86400000)
+      var hours = Math.floor((ms - days * 86400000) / 3600000)
+      var minutes = Math.ceil((ms - days * 86400000 - hours * 3600000) / 60000)
+      var age = ''
+      if (days) {
+        age = age + ' ' + days + 'd'
+      }
+      if (hours) {
+        age = age + ' ' + hours + 'h'
+      }
+      if (minutes) {
+        age = age + ' ' + minutes + 'm'
+      }
+      return age.trim()
     }
   }
 }
