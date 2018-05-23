@@ -38,32 +38,31 @@ export default {
       this.selecteditem = item
     },
     load () {
-      if (this.search_source) {
-        this.search_source.cancel('cancel search due to newer request')
-        this.search_source = null
-      }
-      this.search_source = this.$axios.CancelToken.source()
-
+      var self = this
+      var xhr = new XMLHttpRequest()
       var url = 'http://statuspages.me:8880/services'
-      var headers = {}
       // if (authorization) {
-      //   headers = { 'Authorization': authorization }
+      //   xhr.setRequestHeader('Authorization', authorization)
       //   url = url + '&_=' + Date.now()
       // }
-
-      this.$axios.get(url, { headers: headers,
-                             cancelToken: this.search_source.token })
-                 .then(response => {
-                    var services = response.data || []
-                    services.sort((a, b) => {
-                      var aName = a.name.toLowerCase()
-                      var bName = b.name.toLowerCase()
-                      if (aName < bName) return -1
-                      if (aName > bName) return 1
-                      return 0
-                    })
-                    this.services = services
-                  })
+      xhr.open('GET', url)
+      xhr.onload = function() {
+        if (xhr.status === 200 && xhr.responseText) {
+          var data = JSON.parse(xhr.responseText)
+          if (Array.isArray(data) && data.length) {
+            var services = data
+            services.sort((a, b) => {
+              var aName = a.name.toLowerCase()
+              var bName = b.name.toLowerCase()
+              if (aName < bName) return -1
+              if (aName > bName) return 1
+              return 0
+            })
+            self.services = services
+          }
+        }
+      }
+      xhr.send()
     }
   }
 }

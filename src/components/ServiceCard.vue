@@ -37,28 +37,28 @@ export default {
       this.selecteditem = item
     },
     load () {
-      if (this.search_source) {
-        this.search_source.cancel('cancel search due to newer request')
-        this.search_source = null
-      }
-      this.search_source = this.$axios.CancelToken.source()
-
       var url = 'http://statuspages.me:8880/services/' + this.service.id + '/checks/*/status'
-      var headers = {}
+      var self = this
+      var xhr = new XMLHttpRequest()
       // if (authorization) {
-      //   headers = { 'Authorization': authorization }
+      //   xhr.setRequestHeader('Authorization', authorization)
       //   url = url + '&_=' + Date.now()
       // }
 
-      var self = this
-      this.$axios.get(url, { headers: headers })
-                 .then(response => {
-                    if (response && response.data && response.data.length) {
-                      self.status = response.data[0]
-                    } else {
-                      self.status = { status: '' }
-                    }
-                  })
+      xhr.open('GET', url)
+      xhr.onload = function() {
+          if (xhr.status === 200 && xhr.responseText) {
+            var data = JSON.parse(xhr.responseText)
+            if (Array.isArray(data) && data.length) {
+              self.status = data[0]
+            } else {
+              self.status = { status: '' }
+            }
+          } else {
+            self.status = { status: '' }
+          }
+      }
+      xhr.send()
     },
     statusLine(s) {
       if (!s) {

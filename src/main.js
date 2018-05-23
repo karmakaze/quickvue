@@ -15,10 +15,6 @@ import ListsCards from '@/components/ListsCards'
 import ListsCard from '@/components/ListsCard'
 import Tags from '@/components/Tags'
 
-import axios from 'axios'
-
-Object.defineProperty(Vue.prototype, '$axios', { value: axios })
-
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
