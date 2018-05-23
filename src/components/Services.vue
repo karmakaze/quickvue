@@ -40,7 +40,7 @@ export default {
     load () {
       var self = this
       var xhr = new XMLHttpRequest()
-      var url = 'http://statuspages.me:8880/services'
+      var url = 'https://api.statuspages.me/services'
       // if (authorization) {
       //   xhr.setRequestHeader('Authorization', authorization)
       //   url = url + '&_=' + Date.now()
