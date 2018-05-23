@@ -1,8 +1,8 @@
 <template>
   <tr>
     <td>{{ service.name.trim().replace(/ +/g, '&nbsp;') }}</td>
-    <td style="min-width: 160px">{{ status.name }} {{ firstLine(status.status) }}</td>
-    <td><text-value :type="'age'" :value="status.createdAt"></text-value></td>
+    <td :style="Object.assign({'min-width': '160px'}, statusColor())">{{ status.name }} {{ statusLine(status.status) }}</td>
+    <td :style="statusColor()"><text-value :type="'age'" :value="status.createdAt"></text-value></td>
     <td align="center"><text-value :type="'twitter'" :value="service.twitterHandle"></text-value></td>
     <td><text-value :type="'link'" :value="status.statusPageUrl"></text-value></td>
   </tr>
@@ -60,12 +60,24 @@ export default {
                     }
                   })
     },
-    firstLine(s) {
+    statusLine(s) {
       if (!s) {
         return s
       }
       var i = s.indexOf('\n')
-      return i === -1 ? s : s.substring(0, i)
+      if (i >= 0) {
+        s = s.substring(0, i)
+      }
+      return s.replace(/ +/, ' ')
+    },
+    statusColor () {
+      var textColor = { 'color': '#a00000' }
+      if (this.status && this.status.status) {
+        if (this.status.status.startsWith('All Systems Operational') || this.status.status.startsWith('All services available') || this.status.status.startsWith('Server is up.')) {
+          textColor = { 'color': '#00c000' }
+        }
+      }
+      return textColor
     },
     style () {
       var style = {
