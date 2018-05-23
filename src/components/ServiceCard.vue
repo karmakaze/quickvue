@@ -37,7 +37,7 @@ export default {
       this.selecteditem = item
     },
     load () {
-      var url = 'https://api.statuspages.me/services/' + this.service.id + '/checks/*/status'
+      var url = 'https://statuspages.me/services/' + this.service.id + '/checks/*/status'
       var self = this
       var xhr = new XMLHttpRequest()
       // if (authorization) {
