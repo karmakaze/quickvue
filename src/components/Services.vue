@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%">
-    <div><h2>&nbsp;&nbsp;&nbsp;StatusPages.me</h2></div>
+    <div><h2>&nbsp;&nbsp;&nbsp;{{ title() }}</h2></div>
     <div class="services" style="width: 100%">
       <table>
         <tr>
@@ -34,6 +34,9 @@ export default {
   methods: {
     selected (item) {
       this.selecteditem = item
+    },
+    title () {
+      return window.location.hostname.toLowerCase().endsWith('s.me') ? "StatusPages.me" : "StatusPage.me"
     },
     load () {
       var self = this
