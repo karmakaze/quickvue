@@ -23,8 +23,6 @@ module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js',
-    styles: [
-    ]
   },
   output: {
     path: config.build.assetsRoot,
