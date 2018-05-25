@@ -58,6 +58,14 @@ export default {
       return s.replace(/ +/, ' ')
     },
     statusColor () {
+      if (this.status) {
+        if (this.status.status === '') {
+          return { color: '#c0c0c0' }
+        }
+        if (this.status.status === 'Checking...') {
+          return { color: '#808080' }
+        }
+      }
       var textColor = { 'color': '#e00000' }
       if (this.status) {
         if (this.status.state === 'OK') {
@@ -67,13 +75,6 @@ export default {
         }
       }
       return textColor
-    },
-    style () {
-      var style = {
-        'border-style': 'solid',
-        'color': '#800080'
-      }
-      return style
     }
   }
 }
