@@ -6,8 +6,8 @@
       <template v-else-if="type === 'age'">{{ age(new Date(Date.parse(value))) }}</template>
       <template v-else-if="type === 'image' && linkUrl(value)"><img :src="value" /></template>
       <template v-else-if="type === 'link'">
-        <a v-if="linkUrl(value)" :href="linkUrl(value)">{{linkText(value)}}</a>
-        <template v-else>{{linkText(value)}}</template>
+        <a v-if="linkUrl(value)" :href="linkUrl(value)" :style="color">{{ linkText(value)}}</a>
+        <span v-else :style="color">{{linkText(value)}}</span>
       </template>
       <template v-else-if="type === 'twitter'"><a :href="twitterUrl(value)">{{ twitterHandle(value) }}</a></template>
       <template v-else-if="typeof type === 'function'">{{ type('text', value) }}</template>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  props: ['type', 'value', 'label'],
+  props: ['type', 'value', 'label', 'color'],
   methods: {
     twitterHandle(handle) {
       if (handle) {
@@ -79,10 +79,6 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
-  color: #2c3e50;
-}
-a:visited {
-  color: #2c3e50;
 }
 ul {
   margin-top: 2px;

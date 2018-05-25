@@ -1,8 +1,8 @@
 <template>
   <tr>
-    <td align="right"><text-value :type="'link'" :value="[twitterUrl(), service.name]"></text-value></td>
+    <td align="right"><text-value :type="'link'" :value="[twitterUrl(), service.name]" :color="{color: '#304444'}"></text-value></td>
     <td align="center" :style="statusColor()"><text-value :type="'age'" :value="status.createdAt"></text-value></td>
-    <td :style="statusColor()"><text-value :type="'link'" :value="[status.statusPageUrl, statusLine(status.status)]"></text-value></td>
+    <td :style="statusColor()"><text-value :type="'link'" :value="[status.statusPageUrl, statusLine(status.status)]" :color="statusColor()"></text-value></td>
   </tr>
 </template>
 
@@ -58,10 +58,12 @@ export default {
       return s.replace(/ +/, ' ')
     },
     statusColor () {
-      var textColor = { 'color': '#a00000' }
-      if (this.status && this.status.status) {
-        if (this.status.status.startsWith('All Systems Operational') || this.status.status.startsWith('All services available') || this.status.status.startsWith('Server is up.')) {
-          textColor = { 'color': '#00c000' }
+      var textColor = { 'color': '#e00000' }
+      if (this.status) {
+        if (this.status.state === 'OK') {
+          textColor = { 'color': '#00b000' }
+        } else if (this.status.state === 'WARN') {
+          textColor = { 'color': '#f08000' }
         }
       }
       return textColor
@@ -80,10 +82,6 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
-  color: #0000e0;
-}
-a:visited {
-  color: #8000e0;
 }
 ul {
   margin-top: 2px;
