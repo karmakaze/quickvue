@@ -49,7 +49,7 @@ export default {
     },
     statusLine(s) {
       if (!s) {
-        return s
+        return '(see status page)'
       }
       var i = s.indexOf('\n')
       if (i >= 0) {
@@ -59,8 +59,8 @@ export default {
     },
     statusColor () {
       if (this.status) {
-        if (this.status.status === '') {
-          return { color: '#c0c0c0' }
+        if (!this.status.status) {
+          return { color: '#b0b0b0' }
         }
         if (this.status.status === 'Checking...') {
           return { color: '#808080' }
@@ -69,7 +69,7 @@ export default {
       var textColor = { 'color': '#e00000' }
       if (this.status) {
         if (this.status.state === 'OK') {
-          textColor = { 'color': '#00b000' }
+          textColor = { 'color': '#00a000' }
         } else if (this.status.state === 'WARN') {
           textColor = { 'color': '#f08000' }
         }
