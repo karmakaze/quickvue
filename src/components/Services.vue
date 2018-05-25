@@ -1,14 +1,12 @@
 <template>
   <div style="width: 100%">
-    <div><h2>StatusPages.me</h2></div>
+    <div><h2>&nbsp;&nbsp;&nbsp;StatusPages.me</h2></div>
     <div class="services" style="width: 100%">
       <table>
         <tr>
-          <th>Service</th>
-          <th>Status</th>
-          <th>Since</th>
-          <th>Twitter</th>
-          <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status Page</th>
+          <th align="right">Service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+          <th align="center">Since</th>
+          <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current status</th>
         </tr>
         <template v-for="service of services">
           <service-card :service="service" :key="service.id"></service-card>

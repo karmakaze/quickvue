@@ -24,7 +24,6 @@ module.exports = {
   entry: {
     app: './src/main.js',
     styles: [
-      './node_modules/dragula/dist/dragula.min.css'
     ]
   },
   output: {

@@ -1,10 +1,8 @@
 <template>
   <tr>
-    <td>{{ service.name.trim().replace(/ +/g, '&nbsp;') }}</td>
-    <td :style="Object.assign({'min-width': '160px'}, statusColor())">{{ status.name }} {{ statusLine(status.status) }}</td>
-    <td :style="statusColor()"><text-value :type="'age'" :value="status.createdAt"></text-value></td>
-    <td align="center"><text-value :type="'twitter'" :value="service.twitterHandle"></text-value></td>
-    <td><text-value :type="'link'" :value="status.statusPageUrl"></text-value></td>
+    <td align="right"><text-value :type="'link'" :value="[twitterUrl(), service.name]"></text-value></td>
+    <td align="center" :style="statusColor()"><text-value :type="'age'" :value="status.createdAt"></text-value></td>
+    <td :style="statusColor()"><text-value :type="'link'" :value="[status.statusPageUrl, statusLine(status.status)]"></text-value></td>
   </tr>
 </template>
 
@@ -22,20 +20,6 @@ export default {
     }
   },
   methods: {
-    twitterLink (twitterHandle) {
-      if (twitterHandle) {
-        return '<>' + twitterHandle ? 'https://twitter.com/' + twitterHandle : '' + '</a>'
-      } else {
-        return ''
-      }
-    },
-    item (option, value) {
-      // console.log('item(option=' + option + ', value=' + JSON.stringify(value) + ')')
-      return value
-    },
-    selected (item) {
-      this.selecteditem = item
-    },
     load () {
       var url = 'https://statuspages.me/services/' + this.service.id + '/checks/*/status'
       var self = this
@@ -59,6 +43,9 @@ export default {
           }
       }
       xhr.send()
+    },
+    twitterUrl() {
+      return this.service.twitterHandle ? 'https://twitter.com/' + this.service.twitterHandle.replace(/^@+/, '') : ''
     },
     statusLine(s) {
       if (!s) {

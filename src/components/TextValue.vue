@@ -4,8 +4,11 @@
       <template v-if="type === 'date'">{{ new Date(Date.parse(value)).toLocaleDateString('en-CA') }}</template>
       <template v-else-if="type === 'datetime'">{{ new Date(Date.parse(value)).toISOString().replace('T', ' ') }}</template>
       <template v-else-if="type === 'age'">{{ age(new Date(Date.parse(value))) }}</template>
-      <template v-else-if="type === 'image' && isValidUrl(value)"><img :src="value" /></template>
-      <template v-else-if="type === 'link' && isValidUrl(value)"><a :href="value">{{trimUrl(value)}}</a></template>
+      <template v-else-if="type === 'image' && linkUrl(value)"><img :src="value" /></template>
+      <template v-else-if="type === 'link'">
+        <a v-if="linkUrl(value)" :href="linkUrl(value)">{{linkText(value)}}</a>
+        <template v-else>{{linkText(value)}}</template>
+      </template>
       <template v-else-if="type === 'twitter'"><a :href="twitterUrl(value)">{{ twitterHandle(value) }}</a></template>
       <template v-else-if="typeof type === 'function'">{{ type('text', value) }}</template>
       <template v-else>{{value}}</template>
@@ -15,7 +18,7 @@
 
 <script>
 export default {
-  props: ['type', 'value'],
+  props: ['type', 'value', 'label'],
   methods: {
     twitterHandle(handle) {
       if (handle) {
@@ -26,25 +29,45 @@ export default {
     twitterUrl (handle) {
       return handle ? 'https://twitter.com/' + handle.replace(/^@+/, '') : ''
     },
-    isValidUrl (url) {
-      return url.startsWith('https:') || url.startsWith('http:') || url.startsWith('data:')
+    validUrl (value) {
     },
-    trimUrl (url) {
-      return url.replace(/^https?:\/\//, '').replace(/\?.*/, '').replace(/\/$/, '')
+    linkUrl (value) {
+      var url = value
+      if (Array.isArray(value) && value.length === 2) {
+        url = value[0]
+      }
+      return url && (url.startsWith('https:') || url.startsWith('http:') || url.startsWith('data:')) ? url : ''
+    },
+    linkText (value) {
+      if (Array.isArray(value) && value.length === 2) {
+        return value[1]
+      } else {
+        var url = value
+        return url.replace(/^https?:\/\//, '').replace(/\?.*/, '').replace(/\/$/, '')
+      }
     },
     age (d) {
       var ms = Date.now() - d.getTime()
       var days = Math.floor(ms / 86400000)
       var hours = Math.floor((ms - days * 86400000) / 3600000)
       var minutes = Math.floor((ms - days * 86400000 - hours * 3600000) / 60000)
+
       var age = ''
       if (days) {
-        age = age + ' ' + days + 'd'
+        age = days + 'd'
       }
-      if (days < 3 && hours) {
+      if (days > 1) {
+        return age
+      }
+
+      if (hours) {
         age = age + ' ' + hours + 'h'
       }
-      if (days === 0 && hours < 3 && minutes) {
+      if (days || hours > 1) {
+        return age
+      }
+
+      if (minutes) {
         age = age + ' ' + minutes + 'm'
       }
       return age.trim() || 'now'
