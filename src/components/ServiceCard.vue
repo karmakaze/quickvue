@@ -49,7 +49,11 @@ export default {
     },
     statusLine(s) {
       if (!s) {
-        return '(see status page)'
+        if (this.status && this.status.statusPageUrl && this.status.statusPageUrl.includes('twitter.com')) {
+          return '(see Twitter page)'
+        } else {
+          return '(see status page)'
+        }
       }
       var i = s.indexOf('\n')
       if (i >= 0) {
