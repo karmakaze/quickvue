@@ -59,6 +59,12 @@ export default {
     },
     statusColor () {
       if (this.status) {
+        if (this.status.state === 'OK') {
+          return { 'color': '#00a000' }
+        } else if (this.status.state === 'WARN') {
+          return { 'color': '#f08000' }
+        }
+
         if (!this.status.status) {
           return { color: '#b0b0b0' }
         }
@@ -66,15 +72,7 @@ export default {
           return { color: '#808080' }
         }
       }
-      var textColor = { 'color': '#e00000' }
-      if (this.status) {
-        if (this.status.state === 'OK') {
-          textColor = { 'color': '#00a000' }
-        } else if (this.status.state === 'WARN') {
-          textColor = { 'color': '#f08000' }
-        }
-      }
-      return textColor
+      return { 'color': '#e00000' }
     }
   }
 }
