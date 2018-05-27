@@ -59,7 +59,8 @@ export default {
       if (i >= 0) {
         s = s.substring(0, i)
       }
-      return s.replace(/ +/, ' ')
+      s = s.replace(/ +/, ' ').replace(/\x0B+/g, ', ')
+      return s.length > 77 ? s.substring(0, 77) + '...' : s
     },
     statusColor () {
       if (this.status) {
