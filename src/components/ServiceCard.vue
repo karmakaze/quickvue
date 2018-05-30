@@ -29,7 +29,7 @@ export default {
       //   url = url + '&_=' + Date.now()
       // }
 
-      xhr.open('GET', url)
+      xhr.open('GET', url, true)
       xhr.onload = function() {
           if (xhr.status === 200 && xhr.responseText) {
             var data = JSON.parse(xhr.responseText)

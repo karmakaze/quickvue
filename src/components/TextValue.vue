@@ -6,8 +6,8 @@
       <template v-else-if="type === 'age'">{{ age(new Date(Date.parse(value))) }}</template>
       <template v-else-if="type === 'image' && linkUrl(value)"><img :src="value" /></template>
       <template v-else-if="type === 'link'">
-        <a v-if="linkUrl(value)" :href="linkUrl(value)" :style="color">{{ linkText(value)}}</a>
-        <span v-else :style="color">{{linkText(value)}}</span>
+        <a v-if="linkUrl(value)" :href="linkUrl(value)" :style="color">{{ linkText(value) }}</a>
+        <span v-else :style="color"><span v-html="linkText(value)"></span></span>
       </template>
       <template v-else-if="type === 'twitter'"><a :href="twitterUrl(value)">{{ twitterHandle(value) }}</a></template>
       <template v-else-if="typeof type === 'function'">{{ type('text', value) }}</template>
