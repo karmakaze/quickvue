@@ -21,8 +21,8 @@ export default {
   },
   methods: {
     load () {
-      var url = 'https://statuspages.me/services/' + this.service.id + '/checks/*/status'
       var self = this
+      var url = 'https://statuspages.me/services/' + this.service.id + '/checks/*/status'
       var xhr = new XMLHttpRequest()
       // if (authorization) {
       //   xhr.setRequestHeader('Authorization', authorization)
