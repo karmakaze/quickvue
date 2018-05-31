@@ -4,7 +4,22 @@
       <form>
           <table>
               <tr>
-                  <td><label for="service_id">service_id</label>:</td><td><input name="service_id" v-model="service_id" type="text" size="20"/> <button v-on:click.prevent="load">Load</button></td>
+                  <th>Service</th>
+              </tr>
+              <tr>
+                  <td><label for="service_id">service_id</label>:</td><td><input name="service_id" v-model="service_id" type="text" size="20"/> <button v-on:click.prevent="load">Load</button> <button v-on:click.prevent="deleteService">Delete</button></td>
+              </tr>
+              <tr>
+                  <td><label for="service_name">name</label>:</td><td><input name="service_name" v-model="service_name" type="text" size="20"/></td>
+              </tr>
+              <tr>
+                  <td><label for="twitter_handle">twitter_handle</label>:</td><td><input name="twitter_handle" v-model="twitter_handle" type="text" size="20"/></td>
+              </tr>
+              <tr>
+                  <th>Check</th>
+              </tr>
+              <tr>
+                  <td><label for="status_page_url">status_page_url</label>:</td><td><input name="status_page_url" v-model="status_page_url" type="text" size="52"/></td>
               </tr>
               <tr>
                   <td><label for="status_data_url">status_data_url</label>:</td><td><input name="status_data_url" v-model="status_data_url" type="text" size="52"/></td>
@@ -44,6 +59,10 @@ export default {
   data () {
     return {
       service_id: '',
+      service_name: '',
+      twitter_handle: '',
+      name: '',
+      status_page_url: '',
       status_data_url: '',
       selector: '',
       mapper: '',
@@ -56,7 +75,7 @@ export default {
   methods: {
     load () {
       var self = this
-      var url = 'https://statuspages.me/services/' + this.service_id + '/checks'
+      var url = 'http://localhost:8880/services/' + this.service_id + '/checks'
       var xhr = new XMLHttpRequest()
       xhr.open('GET', url)
       xhr.onload = function() {
@@ -65,6 +84,11 @@ export default {
           if (Array.isArray(data) && data.length) {
             data = data[0]
           }
+          self.service_id = data.serviceId
+          self.service_name = data.service.name
+          self.twitter_handle = data.service.twitterHandle
+          self.name = ''
+          self.status_page_url = data.statusPageUrl
           self.status_data_url = data.statusDataUrl
           self.selector = data.selector
           self.mapper = data.mapper
@@ -77,13 +101,18 @@ export default {
       xhr.send()
     },
     save() {
-      var url = 'https://statuspages.me/services/' + this.service_id + '/checks'
+      var url = 'http://localhost:8880/services/' + this.service_id + '/checks'
       var xhr = new XMLHttpRequest()
-      xhr.open('GET', url)
+      xhr.open('POST', url)
       xhr.setRequestHeader('Content-Type', 'application/json')
       var data = {
-          service_id: this.service_id,
+          service: {
+            id: this.service_id,
+            name: this.service_name,
+            twitterHandle: this.twitter_handle
+          },
           name: '',
+          statusPageUrl: this.status_page_url,
           statusDataUrl: this.status_data_url,
           selector: this.selector,
           mapper: this.mapper,
@@ -92,14 +121,27 @@ export default {
           matchDown: this.match_down,
           script: this.script
       }
-      xhr.send(data)
+      xhr.send(JSON.stringify(data))
+    },
+    deleteService () {
+      var url = 'http://localhost:8880/services/' + this.service_id
+      var xhr = new XMLHttpRequest()
+      xhr.open('DELETE', url)
+      xhr.send()
     },
     test () {
-      var url = 'https://statuspages.me/checks/test'
+      var url = 'http://localhost:8880/checks/test'
       var xhr = new XMLHttpRequest()
       xhr.open('POST', url)
       xhr.setRequestHeader('Content-Type', 'application/json')
       xhr.send(JSON.stringify({
+          service: {
+            id: this.service_id,
+            name: this.service_name,
+            twitterHandle: this.twitter_handle
+          },
+          name: '',
+          statusPageUrl: this.status_page_url,
           statusDataUrl: this.status_data_url,
           selector: this.selector,
           mapper: this.mapper,
