@@ -1,8 +1,8 @@
 <template>
   <tr>
     <td align="right"><text-value :type="'link'" :value="[twitterUrl(), service.name]" :color="{color: '#304444'}"></text-value></td>
-    <td align="center" :style="statusColor()"><text-value :type="'age'" :value="status.createdAt"></text-value></td>
-    <td :style="statusColor()"><text-value :type="'link'" :value="[status.statusPageUrl, statusLine(status.status)]" :color="statusColor()"></text-value></td>
+    <td align="center" :style="statusColor()"><text-value :type="'age'" :value="since()"></text-value></td>
+    <td :style="statusColor()"><text-value :type="'link'" :value="[status.statusPageUrl, statusLine()]" :color="statusColor()"></text-value></td>
   </tr>
 </template>
 
@@ -47,39 +47,48 @@ export default {
     twitterUrl() {
       return this.service.twitterHandle ? 'https://twitter.com/' + this.service.twitterHandle.replace(/^@+/, '') : ''
     },
-    statusLine(s) {
-      if (!s) {
-        if (this.status && this.status.statusPageUrl && this.status.statusPageUrl.includes('twitter.com')) {
-          return '(see Twitter page for status)'
-        } else if (this.status.status) {
-          return '(see status page for details)'
+    since() {
+      return this.state() ? this.status.createdAt : null
+    },
+    statusLine() {
+      var state = this.state()
+      if (!state) {
+        if (this.status.statusPageUrl.includes('twitter.com')) {
+          return '(see Twitter for status)'
         } else {
           return '(see status page)'
         }
       }
-      var i = s.indexOf('\n')
-      if (i >= 0) {
-        s = s.substring(0, i)
+      var status = this.status.status
+      if (status) {
+        status = status.trim()
       }
-      s = s.replace(/ +/, ' ').replace(/\x0B+/g, ', ')
-      return s.length > 77 ? s.substring(0, 77) + '...' : s
+      if (!status) {
+        return '(see status page for details)'
+      }
+      var i = status.indexOf('\n')
+      if (i >= 0) {
+        status = status.substring(0, i)
+      }
+      status = status.replace(/ +/, ' ').replace(/\x0B+/g, ', ')
+      return status.length > 77 ? status.substring(0, 77) + '...' : status
     },
     statusColor () {
-      if (this.status) {
-        if (this.status.state === 'OK') {
-          return { 'color': '#00a000' }
-        } else if (this.status.state === 'WARN') {
-          return { 'color': '#f08000' }
-        }
-
-        if (!this.status.status) {
-          return { color: '#b0b0b0' }
-        }
-        if (this.status.status === 'Checking...') {
-          return { color: '#808080' }
-        }
+      var state = this.state()
+      if (state === 'OK') {
+        return {color: '#00a000'}
+      } else if (state === 'WARN') {
+        return {color: '#f08000'}
+      } else if (state === 'DOWN') {
+        return {color: '#e02020'}
       }
-      return { 'color': '#e00000' }
+      return { color: '#909090' }
+    },
+    state() {
+      if (!this.status || !this.status.statusDataUrl || !this.status.state) {
+        return ''
+      }
+      return this.status.state
     }
   }
 }
