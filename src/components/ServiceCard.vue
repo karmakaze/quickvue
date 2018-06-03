@@ -50,7 +50,9 @@ export default {
     statusLine(s) {
       if (!s) {
         if (this.status && this.status.statusPageUrl && this.status.statusPageUrl.includes('twitter.com')) {
-          return '(see Twitter page)'
+          return '(see Twitter page for status)'
+        } else if (this.status.status) {
+          return '(see status page for details)'
         } else {
           return '(see status page)'
         }
