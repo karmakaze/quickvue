@@ -53,11 +53,10 @@ export default {
     statusLine() {
       var state = this.state()
       if (!state) {
-        if (this.status.statusPageUrl.includes('twitter.com')) {
+        if (this.status && (this.status.statusPageUrl || '').includes('twitter.com')) {
           return '(see Twitter for status)'
-        } else {
-          return '(see status page)'
         }
+        return '(see status page)'
       }
       var status = this.status.status
       if (status) {
