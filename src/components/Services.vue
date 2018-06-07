@@ -4,7 +4,7 @@
     <div class="services" style="width: 100%">
       <table>
         <tr>
-          <th v-if="editing"><input type="checkbox" :checked="allChecked()" v-on:change="toggle({serviceId: '*', checked: $event.target.checked})"/><input type="button" value="Done" v-on:click="editOrDone"/></th><th v-else><input type="button" value="Edit" v-on:click="editOrDone"/></th>
+          <th v-if="editing"><input type="checkbox" :checked="allChecked()" v-on:change="toggle({serviceId: '*', checked: $event.target.checked})"/><input type="button" value="<" v-on:click="editOrDone"/></th><th v-else><input type="button" value=">" v-on:click="editOrDone"/></th>
           <th align="right">Service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
           <th align="center">Since</th>
           <th align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current status</th>
