@@ -61,15 +61,21 @@ export default {
     },
     toggle (serviceIdChecked) {
       if (serviceIdChecked.serviceId === '*') {
-        let filterServiceIds = {}
-        this.services.forEach(service => (filterServiceIds[service.id] = serviceIdChecked.checked))
-        this.filterServiceIds = filterServiceIds
+        if (serviceIdChecked.checked) {
+          let filterServiceIds = {}
+          this.services.forEach(service => (filterServiceIds[service.id] = serviceIdChecked.checked))
+          this.filterServiceIds = filterServiceIds
+        } else {
+          this.filterServiceIds = {}
+        }
       } else {
         this.$set(this.filterServiceIds, serviceIdChecked.serviceId, serviceIdChecked.checked)
       }
       let checkedServiceIds = Object.entries(this.filterServiceIds).filter(e => e[1]).map(e => e[0])
       setCookie('filterServiceIds', checkedServiceIds.join(','))
-      console.log('set then getCookie', getCookie('filterServiceIds'))
+      if (checkedServiceIds.length === 0) {
+        this.filterServiceIds = {}
+      }
     },
     title () {
       return window.location.hostname.toLowerCase().endsWith('s.me') ? "StatusPages.me" : "StatusPage.me"
