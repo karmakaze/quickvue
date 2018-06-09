@@ -75,7 +75,7 @@ export default {
   methods: {
     load () {
       var self = this
-      var url = 'https://statuspages.me/services/' + this.service_id + '/checks'
+      var url = 'https://statuspages.me/services/' + this.service_id + '/checks?_=' + new Date().getTime()
       var xhr = new XMLHttpRequest()
       xhr.open('GET', url)
       xhr.onload = function() {
