@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%">
-    <div><h2>&nbsp;&nbsp;&nbsp;{{ title() }}</h2></div>
+    <div><h2>&nbsp;&nbsp;&nbsp;<a href="https://twitter.com/StatusPages_me">{{ title() }}</a></h2></div>
     <div class="services" style="width: 100%">
       <table>
         <tr>
@@ -122,9 +122,9 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
-  color: #0000e0;
+  color: #400040;
 }
-a:visited {
-  color: #8000e0;
+.twitter {
+  font-size: 80%;
 }
 </style>
