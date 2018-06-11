@@ -34,7 +34,13 @@
                   <td><label for="match_okay">match_okay</label>:</td><td><input name="match_okay" v-model="match_okay" type="text" size="52"/></td>
               </tr>
               <tr>
+                  <td><label for="warn_selector">warn_selector</label>:</td><td><input name="warn_selector" v-model="warn_selector" type="text" size="52"/></td>
+              </tr>
+              <tr>
                   <td><label for="match_warn">match_warn</label>:</td><td><input name="match_warn" v-model="match_warn" type="text" size="52"/></td>
+              </tr>
+              <tr>
+                  <td><label for="down_selector">down_selector</label>:</td><td><input name="down_selector" v-model="down_selector" type="text" size="52"/></td>
               </tr>
               <tr>
                   <td><label for="match_down">match_down</label>:</td><td><input name="match_down" v-model="match_down" type="text" size="52"/></td>
@@ -43,7 +49,7 @@
                   <td><label for="script">script:</label>:</td><td><button v-on:click.prevent="test">Test</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button v-on:click.prevent="save">Save</button></td>
               </tr>
               <tr>
-                  <td colspan="2"><textarea v-model="script" rows="24" cols="80"></textarea></td>
+                  <td colspan="2" valign="top"><textarea v-model="script" rows="24" cols="80"></textarea></td><td valign="top">{{test_output}}</td>
               </tr>
               <tr>
                   <td></td><td></td>
@@ -67,9 +73,12 @@ export default {
       selector: '',
       mapper: '',
       match_okay: '',
+      warn_selector: '',
       match_warn: '',
+      down_selector: '',
       match_down: '',
-      script: ''
+      script: '',
+      test_output: ''
     }
   },
   methods: {
@@ -93,9 +102,12 @@ export default {
           self.selector = data.selector
           self.mapper = data.mapper
           self.match_okay = data.matchOkay
+          self.warn_selector = data.warnSelector
           self.match_warn = data.matchWarn
+          self.down_selector = data.downSelector
           self.match_down = data.matchDown
           self.script = data.script
+          self.test_output = ''
         }
       }
       xhr.send()
@@ -117,7 +129,9 @@ export default {
           selector: this.selector,
           mapper: this.mapper,
           matchOkay: this.match_okay,
+          warnSelector: this.warn_selector,
           matchWarn: this.match_warn,
+          downSelector: this.down_selector,
           matchDown: this.match_down,
           script: this.script
       }
@@ -130,9 +144,17 @@ export default {
       xhr.send()
     },
     test () {
+      var self = this
+      self.test_output = ''
       var url = 'https://statuspages.me/checks/test'
       var xhr = new XMLHttpRequest()
       xhr.open('POST', url)
+      xhr.onload = function() {
+        if (xhr.status === 200 && xhr.responseText) {
+          var data = JSON.parse(xhr.responseText)
+          self.test_output = JSON.stringify(data, true)
+        }
+      }
       xhr.setRequestHeader('Content-Type', 'application/json')
       xhr.send(JSON.stringify({
           service: {
