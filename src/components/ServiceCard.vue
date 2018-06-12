@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td><input v-if="checked !== null" type="checkbox" :checked="checked" v-on:change="$emit('change', {serviceId: service.id, checked: $event.target.checked})"/></td>
-    <td align="right"><text-value :type="'link'" :value="[twitterUrl(), service.name]" :color="{color: '#304444'}"></text-value></td>
+    <td align="right"><text-value :type="'link'" :value="[twitterUrl(), serviceName()]" :color="{color: '#304444'}"></text-value></td>
     <td align="center" :style="statusColor()"><text-value :type="'age'" :value="since()"></text-value></td>
     <td :style="statusColor()"><text-value :type="'link'" :value="[status.statusPageUrl, statusLine()]" :color="statusColor()"></text-value></td>
   </tr>
@@ -44,6 +44,9 @@ export default {
           }
       }
       xhr.send()
+    },
+    serviceName() {
+      return window.innerWidth >= 420 ? this.service.name.replace(/ /g, '&nbsp;') : this.service.name
     },
     twitterUrl() {
       return this.service.twitterHandle ? 'https://twitter.com/' + this.service.twitterHandle.replace(/^@+/, '') : ''
