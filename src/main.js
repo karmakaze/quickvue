@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueAnalytics from 'vue-analytics'
 import ServiceAdd from '@/components/ServiceAdd'
 import ServiceCard from '@/components/ServiceCard'
 import SearchBar from '@/components/SearchBar'
@@ -34,9 +33,5 @@ Vue.component('lists-card', ListsCard)
 Vue.component('tags', Tags)
 
 App.router = router
-
-Vue.use(VueAnalytics, {
-    id: 'UA-120229880-1'
-})
 
 new Vue(App).$mount("#app")
