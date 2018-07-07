@@ -84,7 +84,7 @@ export default {
   methods: {
     load () {
       var self = this
-      var url = 'https://statuspages.me/services/' + this.service_id + '/checks?_=' + new Date().getTime()
+      var url = 'https://api.statuspages.me/services/' + this.service_id + '/checks?_=' + new Date().getTime()
       var xhr = new XMLHttpRequest()
       xhr.open('GET', url)
       xhr.onload = function() {
@@ -113,7 +113,7 @@ export default {
       xhr.send()
     },
     save() {
-      var url = 'https://statuspages.me/services/' + this.service_id + '/checks'
+      var url = 'https://api.statuspages.me/services/' + this.service_id + '/checks'
       var xhr = new XMLHttpRequest()
       xhr.open('POST', url)
       xhr.setRequestHeader('Content-Type', 'application/json')
@@ -138,7 +138,7 @@ export default {
       xhr.send(JSON.stringify(data))
     },
     deleteService () {
-      var url = 'https://statuspages.me/services/' + this.service_id
+      var url = 'https://api.statuspages.me/services/' + this.service_id
       var xhr = new XMLHttpRequest()
       xhr.open('DELETE', url)
       xhr.send()
@@ -146,7 +146,7 @@ export default {
     test () {
       var self = this
       self.test_output = ''
-      var url = 'https://statuspages.me/checks/test'
+      var url = 'https://api.statuspages.me/checks/test'
       var xhr = new XMLHttpRequest()
       xhr.open('POST', url)
       xhr.onload = function() {

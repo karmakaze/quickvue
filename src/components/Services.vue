@@ -91,7 +91,7 @@ export default {
     load () {
       let self = this
       let xhr = new XMLHttpRequest()
-      let url = 'https://statuspages.me/services'
+      let url = 'https://api.statuspages.me/services'
       // if (authorization) {
       //   xhr.setRequestHeader('Authorization', authorization)
       //   url = url + '&_=' + Date.now()

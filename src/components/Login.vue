@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     login () {
-      var url = 'https://statuspages.me/auth'
+      var url = 'https://api.statuspages.me/auth'
       var xhr = new XMLHttpRequest()
       xhr.open('POST', url)
       xhr.setRequestHeader('Content-Type', 'application/json')
