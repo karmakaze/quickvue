@@ -1,12 +1,12 @@
 # hn-redux - Hacker News (Redux)
 
-A more moderated news.ycombinator.com. An effort to combat reduced signal/noise during summer-time and an eternal September future.
+A more moderated news.ycombinator.com. An effort to combat reduced signal/noise during summer-time and a future of eternal September.
 
 ## Planned Features
 
 - downvoting with category tag
 - category tag weighted viewing
-- pre-collapsing (additional dimming or reordering) of comments
+- pre-collapsing comments (with additional dimming or reordering)
 
 ## Implementation
 
