@@ -3,7 +3,7 @@
     <template v-if="value">
       <template v-if="type === 'date'">{{ new Date(Date.parse(value)).toLocaleDateString('en-CA') }}</template>
       <template v-else-if="type === 'datetime'">{{ new Date(Date.parse(value)).toISOString().replace('T', ' ') }}</template>
-      <template v-else-if="type === 'age'">{{ age(new Date(Date.parse(value))) }}</template>
+      <template v-else-if="type === 'age'">{{ age(new Date(value)) }} ago</template>
       <template v-else-if="type === 'image' && linkUrl(value)"><img :src="value" /></template>
       <template v-else-if="type === 'link'">
         <a v-if="linkUrl(value)" :href="linkUrl(value)" :style="color"><span v-html="linkText(value)"></span></a>
@@ -62,7 +62,7 @@ export default {
       if (minutes) {
         return minutes + 'm'
       }
-      return 'now'
+      return Math.ceil(ms / 1000) + 's'
     }
   }
 }
