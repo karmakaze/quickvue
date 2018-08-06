@@ -1,9 +1,10 @@
-var sha256 = require('sha.js').sha256
+var shajs = require('sha.js')
 
 const shards = {
 }
 
 function getShard(itemId) {
+  console.log(`getting shard for item ${itemId}`)
   let shardKey
   if (Number.isInteger(itemId)) {
     let shard = (itemId % 1000).toString()
@@ -14,7 +15,7 @@ function getShard(itemId) {
 
   let hash = shards[shardKey]
   if (!hash) {
-    hash = sha256().update(shardKey).digest('hex')
+    hash = shajs('sha256').update(shardKey).digest('hex')
     shards[shardKey] = hash
   }
   return hash
@@ -37,6 +38,8 @@ function getLabels(storyId, labelsHandler) {
   let hash = getShard(storyId)
 
   let url = 'https://jsonstore.io/' + hash + '/items/' + storyId + '/labels'
+  console.log(`getting labels for story ${storyId} shard url ${url}`)
+
   let xhr = new XMLHttpRequest()
   xhr.open('GET', url)
   xhr.onload = function () {

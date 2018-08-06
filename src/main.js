@@ -6,10 +6,11 @@ import router from './router'
 import StoryCard from '@/components/StoryCard'
 import TextValue from '@/components/TextValue'
 import Tags from '@/components/Tags'
+import * as labels from './util/labels'
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
+Object.defineProperty(Vue.prototype, '$labels', { value: labels })
 
 Vue.component('story-card', StoryCard)
 Vue.component('text-value', TextValue)

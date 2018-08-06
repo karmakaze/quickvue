@@ -10,6 +10,7 @@
       <div class="line2">
         {{ story.score }} points by {{ story.by }} <text-value type="age" :value="story.time * 1000"/> | {{ story.descendants }} comments
         <a :href="'https://hacker-news.firebaseio.com/v0/item/' + story.id +'.json'">🏷</a>
+        <span v-for="label of story.labels" :key="label">{{ label }}</span>
         <span v-if="story.dead">dead</span>
         <span v-if="story.deleted">deleted</span>
       </div>
@@ -25,28 +26,46 @@ export default {
   },
   data () {
     return {
-      story: {}
+      story: {"labels": []}
     }
   },
   methods: {
     load () {
-      var self = this
-      var url = 'https://hacker-news.firebaseio.com/v0/item/' + this.storyId + '.json'
-      var xhr = new XMLHttpRequest()
-      // if (authorization) {
-      //   xhr.setRequestHeader('Authorization', authorization)
-      //   url = url + '&_=' + Date.now()
-      // }
-      xhr.open('GET', url, true)
-      xhr.onload = function() {
+      this.getItem(this.storyId, (xhr) => {
+        if (xhr.status === 200 && xhr.responseText) {
+          var data = JSON.parse(xhr.responseText)
+          if (data && data) {
+            this.story = data
+            this.getLabels()
+          }
+        }
+      })
+    },
+    getLabels() {
+      console.log(`getting labels for story ${this.story.id}`)
+      this.$labels.getLabels(this.story.id, (labels) => {
+        console.log(`got labels for story ${this.story.id}: ${labels}`)
+        this.story.labels = labels
+      })
+    },
+    loadComments (parent, itemIds) {
+      for (var i in itemIds) {
+        this.getItem(itemIds[i], (xhr) => {
           if (xhr.status === 200 && xhr.responseText) {
             var data = JSON.parse(xhr.responseText)
-            self.story = data
-          } else {
-            self.story = {}
+            if (data && data.result) {
+              var comment = data.result
+              if (!parent.comments) {
+                parent.comments = []
+              }
+              parent.comments.push(comment)
+              if (comment.kids) {
+                this.loadComments(comment, comment.kids)
+              }
+            }
           }
+        })
       }
-      xhr.send()
     },
     numberLabel() {
       var number = 1 + this.index
@@ -58,6 +77,13 @@ export default {
       var parts = l.hostname.split('.')
       parts = parts.length <= 2 ? parts : parts.slice(parts.length - 2)
       return parts.join('.')
+    },
+    getItem(itemId, onload) {
+      var url = 'https://hacker-news.firebaseio.com/v0/item/' + itemId + '.json'
+      var xhr = new XMLHttpRequest()
+      xhr.open('GET', url, true)
+      xhr.onload = () => onload(xhr)
+      xhr.send()
     }
   }
 }
