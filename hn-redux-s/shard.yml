@@ -1,0 +1,28 @@
+name: hn-redux-s
+version: 0.1.0
+
+authors:
+  - Keith Kim <keith@keithkim.org>
+
+targets:
+  hn-redux-s:
+    main: src/hn-redux-s.cr
+
+crystal: 0.25.1
+
+dependencies:
+  lucky:
+    github: luckyframework/lucky
+    version: ~> 0.11
+  lucky_migrator:
+    github: luckyframework/lucky_migrator
+    version: ~> 0.6
+  authentic:
+    github: luckyframework/authentic
+    version: ~> 0.1.0
+  carbon:
+    github: luckyframework/carbon
+    version: ~> 0.1.0
+  lucky_flow:
+    github: luckyframework/lucky_flow
+    version: ~> 0.2
