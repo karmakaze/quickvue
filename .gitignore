@@ -17,15 +17,15 @@ selenium-debug.log
 *.sln
 
 # Back-end directories and files
-hn-redux-s/docs/
-hn-redux-s/lib/
-hn-redux-s/.shards/
-hn-redux-s/node_modules/
-hn-redux-s/yarn-error.log
-hn-redux-s/public/mix-manifest.json
-hn-redux-s/public/js/
-hn-redux-s/public/css/
-hn-redux-s/bin/lucky/
-hn-redux-s/server
-hn-redux-s/*.dwarf
-hn-redux-s/*.local.cr
+hn-redux-l/docs/
+hn-redux-l/lib/
+hn-redux-l/.shards/
+hn-redux-l/node_modules/
+hn-redux-l/yarn-error.log
+hn-redux-l/public/mix-manifest.json
+hn-redux-l/public/js/
+hn-redux-l/public/css/
+hn-redux-l/bin/lucky/
+hn-redux-l/server
+hn-redux-l/*.dwarf
+hn-redux-l/*.local.cr
