@@ -15,17 +15,3 @@ selenium-debug.log
 *.ntvs*
 *.njsproj
 *.sln
-
-# Back-end directories and files
-hn-redux-l/docs/
-hn-redux-l/lib/
-hn-redux-l/.shards/
-hn-redux-l/node_modules/
-hn-redux-l/yarn-error.log
-hn-redux-l/public/mix-manifest.json
-hn-redux-l/public/js/
-hn-redux-l/public/css/
-hn-redux-l/bin/lucky/
-hn-redux-l/server
-hn-redux-l/*.dwarf
-hn-redux-l/*.local.cr
