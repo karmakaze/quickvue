@@ -1,2 +1,2 @@
 require "spec"
-require "../src/hn-redux-s"
+require "../src/hn_redux_s"

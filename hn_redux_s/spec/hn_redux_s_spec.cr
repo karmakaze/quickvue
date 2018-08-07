@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe Hn::Redux::S do
+describe HnReduxS do
   # TODO: Write tests
 
   it "works" do
