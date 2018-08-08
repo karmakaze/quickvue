@@ -3,22 +3,29 @@ module HnReduxS
     env.response.content_type = "application/json"
   end
 
-  get "/items" do |env|
-    puts "GET / env.params #{env.params.inspect}"
-    result = [] of Hash(String, String|JSON::Any)
+  put "/items/:id/:name" do |env|
+    item_id = env.params.url["id"]
+    name = env.params.url["name"]
+    puts "PUT /items/#{item_id}/#{name}"
 
     DB.open "postgres://postgres:postgres@localhost/hn_redux_s_development" do |db|
-      db.query "SELECT item_id, name, json FROM item_prop" do |rs|
-        rs.each do
-          item = Hash(String, String|JSON::Any).new
-          item["item_id"] = rs.read(String)
-          item["name"] = rs.read(String)
-          item["json"] = JSON.parse(rs.read(String))
-          result << item
-        end
-      end
+      sql = "INSERT INTO item_prop (item_id, name, json) VALUES ($1, $2, 1)
+             ON CONFLICT ON CONSTRAINT item_prop_pkey DO NOTHING"
+      db.exec(sql, item_id, name)
     end
-    result.to_json
+    env.response.status_code = 204
+  end
+
+  delete "/items/:id/:name" do |env|
+    item_id = env.params.url["id"]
+    name = env.params.url["name"]
+    puts "DELETE /items/#{item_id}/#{name}"
+
+    DB.open "postgres://postgres:postgres@localhost/hn_redux_s_development" do |db|
+      sql = "DELETE FROM item_prop WHERE item_id = $1 AND name = $2"
+      db.exec(sql, item_id, name)
+    end
+    env.response.status_code = 204
   end
 
   get "/items/:id" do |env|
