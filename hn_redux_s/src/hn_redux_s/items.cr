@@ -1,6 +1,13 @@
 module HnReduxS
   before_all "/" do |env|
+    env.response.headers.add("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT")
+    env.response.headers.add("Access-Control-Allow-Headers", "Content-Type, Accept, Origin, Authorization")
+    env.response.headers.add("Access-Control-Max-Age", "86400")
     env.response.content_type = "application/json"
+  end
+
+  options "/**" do |env|
+    env.response.headers.add("Access-Control-Allow-Origin", "*")
   end
 
   put "/items/:id/:name" do |env|
@@ -14,6 +21,7 @@ module HnReduxS
       db.exec(sql, item_id, name)
     end
     env.response.status_code = 204
+    env.response.headers.add("Access-Control-Allow-Origin", "*")
   end
 
   delete "/items/:id/:name" do |env|
@@ -26,6 +34,7 @@ module HnReduxS
       db.exec(sql, item_id, name)
     end
     env.response.status_code = 204
+    env.response.headers.add("Access-Control-Allow-Origin", "*")
   end
 
   get "/items/:id" do |env|
@@ -42,6 +51,7 @@ module HnReduxS
         end
       end
     end
+    env.response.headers.add("Access-Control-Allow-Origin", "*")
     item.to_json
   end
 end
