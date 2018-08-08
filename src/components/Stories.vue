@@ -5,7 +5,7 @@
         <th align="left" colspan="3"><h3><span class="logo-box">HN<sub>0</sub></span> Hacker News (redux)</h3></th>
       </tr>
       <template v-for="(storyId, index) of storyIds">
-        <story-card v-if="index < 5" :index="index" :storyId="storyId" :key="storyId" @change="toggle"></story-card>
+        <story-card v-if="index < 30" :index="index" :storyId="storyId" :key="storyId" @change="toggle"></story-card>
       </template>
     </table>
   </div>

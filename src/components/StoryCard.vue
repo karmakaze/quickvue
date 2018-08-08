@@ -10,7 +10,7 @@
       <div class="line2">
         {{ story.score }} points by {{ story.by }} <text-value type="age" :value="story.time * 1000"/> | {{ story.descendants }} comments
         <a :href="'https://hacker-news.firebaseio.com/v0/item/' + story.id +'.json'">🏷</a>
-        <span v-for="label of story.labels" :key="label">{{ label }}</span>
+        <span v-for="label of story.labels" :key="label" v-html="label"/>
         <span v-if="story.dead">dead</span>
         <span v-if="story.deleted">deleted</span>
       </div>
@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      story: {"labels": []}
+      story: {}
     }
   },
   methods: {
@@ -41,11 +41,27 @@ export default {
         }
       })
     },
+    numberLabel() {
+      var number = 1 + this.index
+      return (number < 10 ? '&nbsp;'.concat(number) : number)
+    },
+    domain() {
+      var l = document.createElement("a")
+      l.href = this.story.url
+      var parts = l.hostname.split('.')
+      parts = parts.length <= 2 ? parts : parts.slice(parts.length - 2)
+      return parts.join('.')
+    },
+    getItem(itemId, onload) {
+      var url = 'https://hacker-news.firebaseio.com/v0/item/' + itemId + '.json'
+      var xhr = new XMLHttpRequest()
+      xhr.open('GET', url, true)
+      xhr.onload = () => onload(xhr)
+      xhr.send()
+    },
     getLabels() {
-      console.log(`getting labels for story ${this.story.id}`)
       this.$labels.getLabels(this.story.id, (labels) => {
-        console.log(`got labels for story ${this.story.id}: ${labels}`)
-        this.story.labels = labels
+        this.$set(this.story, 'labels', labels)
       })
     },
     loadComments (parent, itemIds) {
@@ -66,24 +82,6 @@ export default {
           }
         })
       }
-    },
-    numberLabel() {
-      var number = 1 + this.index
-      return (number < 10 ? '&nbsp;'.concat(number) : number)
-    },
-    domain() {
-      var l = document.createElement("a")
-      l.href = this.story.url
-      var parts = l.hostname.split('.')
-      parts = parts.length <= 2 ? parts : parts.slice(parts.length - 2)
-      return parts.join('.')
-    },
-    getItem(itemId, onload) {
-      var url = 'https://hacker-news.firebaseio.com/v0/item/' + itemId + '.json'
-      var xhr = new XMLHttpRequest()
-      xhr.open('GET', url, true)
-      xhr.onload = () => onload(xhr)
-      xhr.send()
     }
   }
 }
