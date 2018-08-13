@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import StoryCard from '@/components/StoryCard'
 import TextValue from '@/components/TextValue'
 import Tags from '@/components/Tags'
 import * as labels from './util/labels'
@@ -12,7 +11,6 @@ Vue.config.productionTip = false
 
 Object.defineProperty(Vue.prototype, '$labels', { value: labels })
 
-Vue.component('story-card', StoryCard)
 Vue.component('text-value', TextValue)
 Vue.component('tags', Tags)
 

@@ -1,12 +1,32 @@
 <template>
-  <div class="stories" style="width:60em">
-    <table cellspacing="0">
+  <div class="entries">
+    <h3>QuickVue</h3>
+    <table cellspacing="0" border="1">
       <tr>
-        <th><h3>QuickVue</h3></th>
+        <th>project_id</th>
+        <th>published</th>
+        <th>source</th>
+        <th>actor</th>
+        <th>type</th>
+        <th>object</th>
+        <th>target</th>
+        <th>context</th>
+        <th>trace_id</th>
+        <th>span_id</th>
       </tr>
-      <template v-for="(entry, index) of entries">
-        <tr :key="entry.id">
-          <td>{{ index }}. {{ entry }}</td>
+
+      <template v-for="entry of entries">
+        <tr :key="entry.seq">
+          <td align="center">{{ entry.project_id }}</td>
+          <td>{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
+          <td>{{ entry.source }}</td>
+          <td>{{ entry.actor }}</td>
+          <td>{{ entry.type }}</td>
+          <td>{{ entry.object }}</td>
+          <td>{{ entry.target }}</td>
+          <td>{{ JSON.stringify(entry.context) }}</td>
+          <td>{{ entry.trace_id }}</td>
+          <td>{{ entry.span_id }}</td>
         </tr>
       </template>
     </table>
