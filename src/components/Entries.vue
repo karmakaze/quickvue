@@ -2,10 +2,12 @@
   <div class="stories" style="width:60em">
     <table cellspacing="0">
       <tr>
-        <th align="left" colspan="3"><h3><span class="logo-box">HN<sub>0</sub></span> Hacker News (redux)</h3></th>
+        <th><h3>QuickVue</h3></th>
       </tr>
-      <template v-for="(storyId, index) of storyIds">
-        <story-card v-if="index < 30" :index="index" :storyId="storyId" :key="storyId" @change="toggle"></story-card>
+      <template v-for="(entry, index) of entries">
+        <tr :key="entry.id">
+          <td>{{ index }}. {{ entry }}</td>
+        </tr>
       </template>
     </table>
   </div>
@@ -20,7 +22,7 @@ export default {
   },
   data () {
     return {
-      storyIds: []
+      entries: []
     }
   },
   watch: {
@@ -58,7 +60,7 @@ export default {
     load () {
       let self = this
       let xhr = new XMLHttpRequest()
-      let url = 'https://hacker-news.firebaseio.com/v0/topstories.json'
+      let url = 'http://localhost:8080/entries'
       // if (authorization) {
       //   xhr.setRequestHeader('Authorization', authorization)
       //   url = url + '&_=' + Date.now()
@@ -67,8 +69,8 @@ export default {
       xhr.onload = function() {
         if (xhr.status === 200 && xhr.responseText) {
           let data = JSON.parse(xhr.responseText)
-          if (Array.isArray(data) && data.length) {
-            self.storyIds = data
+          if (Array.isArray(data)) {
+            self.entries = data
           }
         }
       }
