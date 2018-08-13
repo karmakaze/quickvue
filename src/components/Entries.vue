@@ -3,16 +3,16 @@
     <h3>QuickVue</h3>
     <table cellspacing="0" border="1">
       <tr>
-        <th>project_id</th>
-        <th>published</th>
-        <th>source</th>
-        <th>actor</th>
-        <th>type</th>
-        <th>object</th>
-        <th>target</th>
-        <th>context</th>
-        <th>trace_id</th>
-        <th>span_id</th>
+        <th>Project</th>
+        <th>Published UTC</th>
+        <th>Source</th>
+        <th>Actor</th>
+        <th>Type</th>
+        <th>Object</th>
+        <th>Target</th>
+        <th>Context</th>
+        <th>trace-id</th>
+        <th>span-id</th>
       </tr>
 
       <template v-for="entry of entries">
@@ -80,7 +80,7 @@ export default {
     load () {
       let self = this
       let xhr = new XMLHttpRequest()
-      let url = 'http://localhost:8080/entries'
+      let url = 'http://localhost:8124/entries'
       // if (authorization) {
       //   xhr.setRequestHeader('Authorization', authorization)
       //   url = url + '&_=' + Date.now()
