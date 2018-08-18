@@ -80,7 +80,7 @@ export default {
     load () {
       let self = this
       let xhr = new XMLHttpRequest()
-      let url = 'http://localhost:8124/entries'
+      let url = this.$route.query.quicklog_url || 'http://localhost:8124/entries'
       // if (authorization) {
       //   xhr.setRequestHeader('Authorization', authorization)
       //   url = url + '&_=' + Date.now()
