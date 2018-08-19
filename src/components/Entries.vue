@@ -1,6 +1,5 @@
 <template>
   <div class="entries">
-    <h3>QuickVue</h3>
     <table cellspacing="0" border="1">
       <tr>
         <th>Published UTC</th>
@@ -47,6 +46,7 @@
 import { getCookie, setCookie } from '../util/cookies.js'
 
 export default {
+  props: ['quicklogUrl', 'projectId', 'traceOrSpanId'],
   created () {
     this.load()
   },
@@ -57,6 +57,15 @@ export default {
   },
   watch: {
     '$route' () {
+      this.load()
+    },
+    'quicklogUrl' () {
+      this.load()
+    },
+    'projectId' () {
+      this.load()
+    },
+    'traceOrSpanId' () {
       this.load()
     }
   },
@@ -90,13 +99,8 @@ export default {
     load () {
       let self = this
       let xhr = new XMLHttpRequest()
-      let params = new URLSearchParams(window.location.search.substring(1))
-      let url = params.get("quicklog_url") || 'http://localhost:8124/entries'
-      url = url.replace('quicklog_url=', '')
-      // if (authorization) {
-      //   xhr.setRequestHeader('Authorization', authorization)
-      //   url = url + '&_=' + Date.now()
-      // }
+      // let params = new URLSearchParams(window.location.search.substring(1))
+      let url = this.quicklogUrl + '/entries?project_id=' + this.projectId + '&trace_id=' + this.traceOrSpanId + '&span_id=' + this.traceOrSpanId
       xhr.open('GET', url)
       xhr.onload = function() {
         if (xhr.status === 200 && xhr.responseText) {

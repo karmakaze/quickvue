@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Entries from "@/components/Entries"
+import QuickVue from "@/components/QuickVue"
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: "/", name: "Entries", component: Entries }
+    { path: "/", name: "QuickVue", component: QuickVue }
   ]
 })
