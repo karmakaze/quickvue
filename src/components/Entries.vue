@@ -104,9 +104,7 @@ export default {
       xhr.onload = function() {
         if (xhr.status === 200 && xhr.responseText) {
           let data = JSON.parse(xhr.responseText)
-          if (Array.isArray(data)) {
-            self.entries = data
-          }
+          self.entries = data.data
         }
       }
       xhr.send()
