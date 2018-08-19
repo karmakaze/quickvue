@@ -29,6 +29,19 @@
           <td>{{ entry.span_id }}</td>
         </tr>
       </template>
+
+      <tr>
+        <th>Project</th>
+        <th>Published UTC</th>
+        <th>Source</th>
+        <th>Actor</th>
+        <th>Type</th>
+        <th>Object</th>
+        <th>Target</th>
+        <th>Context</th>
+        <th>trace-id</th>
+        <th>span-id</th>
+      </tr>
     </table>
   </div>
 </template>
