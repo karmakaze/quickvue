@@ -3,7 +3,6 @@
     <h3>QuickVue</h3>
     <table cellspacing="0" border="1">
       <tr>
-        <th>Project</th>
         <th>Published UTC</th>
         <th>Source</th>
         <th>Actor</th>
@@ -17,7 +16,6 @@
 
       <template v-for="entry of entries">
         <tr :key="entry.seq">
-          <td align="center">{{ entry.project_id }}</td>
           <td>{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
           <td>{{ entry.source }}</td>
           <td>{{ entry.actor }}</td>
@@ -31,7 +29,6 @@
       </template>
 
       <tr>
-        <th>Project</th>
         <th>Published UTC</th>
         <th>Source</th>
         <th>Actor</th>
