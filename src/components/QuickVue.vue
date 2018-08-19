@@ -1,12 +1,13 @@
 <template>
   <div class="quick-vue">
-    <div>
-      QuickVue
-      <span>project: <input v-model="projectId"/></span>
-      <span>trace/span: <input v-model="traceOrSpanId"/></span>
-      <span>quicklog url: <input v-model="quicklogUrl"/></span>
+    <div class="quickvue-filters">
+      <h2>QuickVue</h2>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span>project: <input v-model="projectId" size="6"/></span>&nbsp;
+      <span>quicklog url: <input v-model="quicklogUrl" size="30"/></span>&nbsp;
+      <span>trace/span: <input v-model="traceOrSpanId"/></span><span v-on:click="selectTraceOrSpanId('')"><img class="delete-back" src="/static/images/delete-back.png"></span>
     </div>
-    <entries :projectId="projectId" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"/>
+    <entries :projectId="projectId" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"
+      @selectTraceId="selectTraceOrSpanId($event)" @selectSpanId="selectTraceOrSpanId($event)"/>
   </div>
 </template>
 
@@ -17,6 +18,11 @@ export default {
       projectId: "4",
       traceOrSpanId: "",
       quicklogUrl: ""
+    }
+  },
+  methods: {
+    selectTraceOrSpanId(traceOrSpanId) {
+      this.traceOrSpanId = traceOrSpanId
     }
   }
 }
@@ -30,6 +36,16 @@ h3 {
 a {
   text-decoration: none;
   color: #400040;
+}
+.quickvue-filters {
+  display: flex;
+  align-items: center;
+}
+.delete-back {
+  margin-left: -2.5em;
+  margin-right: 1em;
+  height: 2em;
+  width: auto;
 }
 .logo-box {
   background-color: #ffe800;

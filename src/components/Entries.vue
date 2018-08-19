@@ -22,8 +22,8 @@
           <td>{{ entry.object }}</td>
           <td>{{ entry.target }}</td>
           <td>{{ JSON.stringify(entry.context) }}</td>
-          <td>{{ entry.trace_id }}</td>
-          <td>{{ entry.span_id }}</td>
+          <td v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
+          <td v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
         </tr>
       </template>
 
