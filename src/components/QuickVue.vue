@@ -17,7 +17,7 @@ export default {
     return {
       projectId: "4",
       traceOrSpanId: "",
-      quicklogUrl: ""
+      quicklogUrl: 'https://quicklog.' + window.location.hostname.split('.').slice(1).join('.')
     }
   },
   methods: {
