@@ -38,6 +38,7 @@ a {
   color: #400040;
 }
 .quickvue-filters {
+  background: #51f87c;
   display: flex;
   align-items: center;
 }
