@@ -189,7 +189,10 @@ th {
 td {
   border-left: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
-  padding: 1px;
+  padding-top: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 1px;
 }
 .logo-box {
   background-color: #ffe800;
