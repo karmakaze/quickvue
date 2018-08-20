@@ -14,9 +14,10 @@
 <script>
 export default {
   data () {
+    let traceId = this.$route.params.traceId || ""
     return {
       projectId: "4",
-      traceOrSpanId: "",
+      traceOrSpanId: traceId,
       quicklogUrl: 'https://quicklog.' + window.location.hostname.split('.').slice(1).join('.')
     }
   },

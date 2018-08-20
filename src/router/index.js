@@ -6,6 +6,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: "/", name: "QuickVue", component: QuickVue }
+    { path: "/", name: "QuickVue", component: QuickVue },
+    { path: "/trace/:traceId", name: "QuickVue", component: QuickVue }
   ]
 })
