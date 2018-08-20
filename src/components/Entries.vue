@@ -7,7 +7,7 @@
       </tr>
       <tr class="heading-row">
         <th>Published UTC</th>
-        <th>Source</th>
+        <th style="width: 8em">Source</th>
         <th>Actor</th>
         <th>Type</th>
         <th>Object</th>
