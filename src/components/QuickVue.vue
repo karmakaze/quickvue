@@ -4,8 +4,8 @@
       <h2>QuickVue</h2>&nbsp;&nbsp;&nbsp;&nbsp;
       <span>project: <input v-model="projectId" size="6"/></span>&nbsp;
       <span>quicklog url: <input v-model="quicklogUrl" size="30"/></span>&nbsp;
-      <span>tag: <input v-model="tag" size="42"/></span><span v-on:click="selectTag('')"><img class="delete-back" src="/static/images/delete-back.png"></span>&nbsp;&nbsp;
-      <span>trace/span: <input v-model="traceOrSpanId"/></span><span v-on:click="selectTraceOrSpanId('')"><img class="delete-back" src="/static/images/delete-back.png"></span>
+      <span>tag: <input v-model="tag" size="45"/></span><span v-on:click="selectTag('')"><img class="delete-back" src="/static/images/delete-back.png"></span>&nbsp;&nbsp;
+      <span>trace/span: <input v-model="traceOrSpanId" size="22"/></span><span v-on:click="selectTraceOrSpanId('')"><img class="delete-back" src="/static/images/delete-back.png"></span>
     </div>
     <entries :projectId="projectId" :tag="tag" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"
       @selectTraceId="selectTraceOrSpanId($event)" @selectSpanId="selectTraceOrSpanId($event)"/>
@@ -51,6 +51,7 @@ a {
   align-items: center;
 }
 .delete-back {
+  margin-top: 0.25em;
   margin-left: -2.5em;
   margin-right: 1em;
   height: 2em;
