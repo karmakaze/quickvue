@@ -4,9 +4,10 @@
       <h2>QuickVue</h2>&nbsp;&nbsp;&nbsp;&nbsp;
       <span>project: <input v-model="projectId" size="6"/></span>&nbsp;
       <span>quicklog url: <input v-model="quicklogUrl" size="30"/></span>&nbsp;
+      <span>tag: <input v-model="tag" size="42"/></span><span v-on:click="selectTag('')"><img class="delete-back" src="/static/images/delete-back.png"></span>&nbsp;&nbsp;
       <span>trace/span: <input v-model="traceOrSpanId"/></span><span v-on:click="selectTraceOrSpanId('')"><img class="delete-back" src="/static/images/delete-back.png"></span>
     </div>
-    <entries :projectId="projectId" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"
+    <entries :projectId="projectId" :tag="tag" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"
       @selectTraceId="selectTraceOrSpanId($event)" @selectSpanId="selectTraceOrSpanId($event)"/>
   </div>
 </template>
@@ -14,16 +15,22 @@
 <script>
 export default {
   data () {
-    let traceId = this.$route.params.traceId || ""
+    let tag = this.$route.params.tag || ''
+    let traceId = this.$route.params.traceId || ''
     return {
-      projectId: "4",
+      projectId: '4',
+      tag: tag,
       traceOrSpanId: traceId,
       quicklogUrl: 'https://quicklog.' + window.location.hostname.split('.').slice(1).join('.')
     }
   },
   methods: {
+    selectTag(tag) {
+      this.tag = tag
+    },
     selectTraceOrSpanId(traceOrSpanId) {
       this.traceOrSpanId = traceOrSpanId
+      this.tag = ''
     }
   }
 }

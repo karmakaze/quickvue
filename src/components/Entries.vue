@@ -54,7 +54,7 @@
 import { getCookie, setCookie } from '../util/cookies.js'
 
 export default {
-  props: ['quicklogUrl', 'projectId', 'traceOrSpanId'],
+  props: ['quicklogUrl', 'projectId', 'tag', 'traceOrSpanId'],
   created () {
     this.load()
   },
@@ -73,6 +73,9 @@ export default {
     'projectId' () {
       this.load()
     },
+    'tag' () {
+      this.load()
+    },
     'traceOrSpanId' () {
       this.load()
     }
@@ -82,7 +85,7 @@ export default {
       let entries = this.entries
       let xhr = new XMLHttpRequest()
       // let params = new URLSearchParams(window.location.search.substring(1))
-      let url = this.quicklogUrl + '/entries?project_id=' + this.projectId + '&trace_id=' + this.traceOrSpanId + '&span_id=' + this.traceOrSpanId
+      let url = this.quicklogUrl + '/entries?project_id=' + this.projectId + '&tag=' + this.tag + '&trace_id=' + this.traceOrSpanId + '&span_id=' + this.traceOrSpanId
       if (isFinite(dirCount)) {
         if (dirCount < 0) {
           if (entries.length > 0) {
@@ -95,6 +98,8 @@ export default {
           }
           url += '&count=' + dirCount
         }
+      } else if (this.tag || this.traceOrSpandId) {
+          url += '&count=1000'
       }
 
       xhr.open('GET', url)
