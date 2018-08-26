@@ -7,9 +7,8 @@
       </tr>
       <tr class="heading-row">
         <th>Published UTC</th>
-        <th style="width: 8em">Source</th>
         <th>Actor</th>
-        <th>Type</th>
+        <th v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
         <th>Object</th>
         <th>Target</th>
         <th>Context</th>
@@ -20,9 +19,8 @@
       <template v-for="entry of entries">
         <tr class="data-row" :key="entry.seq">
           <td>{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
-          <td>{{ entry.source }}</td>
           <td>{{ entry.actor }}</td>
-          <td>{{ entry.type }}</td>
+          <td v-for="source in sources" :key="source">{{ source === entry.source ? entry.type : '' }}</td>
           <td>{{ entry.object }}</td>
           <td>{{ entry.target }}</td>
           <td>{{ JSON.stringify(entry.context) }}</td>
@@ -60,6 +58,7 @@ export default {
   },
   data () {
     return {
+      sources: [],
       entries: []
     }
   },
@@ -127,6 +126,13 @@ export default {
           } else {
             this.entries = []
           }
+          let sources = []
+          this.entries.forEach(e => {
+            if (e.source && !sources.includes(e.source)) {
+              sources.push(e.source)
+            }
+          })
+          this.sources = sources
         }
       }
       xhr.send()
