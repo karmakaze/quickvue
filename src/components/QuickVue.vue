@@ -15,13 +15,20 @@
 <script>
 export default {
   data () {
+    let quicklogUrl = 'http://' + window.location.hostname +":8124"
+    let nameParts = window.location.hostname.split('.')
+    if (nameParts.length === 2) {
+      quicklogUrl = 'https://api.' + window.location.hostname
+    } else if (nameParts.length > 2) {
+      quicklogUrl = 'https://quicklog.' + nameParts.slice(1).join('.')
+    }
     let tag = this.$route.params.tag || ''
     let traceId = this.$route.params.traceId || ''
     return {
       projectId: '4',
       tag: tag,
       traceOrSpanId: traceId,
-      quicklogUrl: 'https://quicklog.' + window.location.hostname.split('.').slice(1).join('.')
+      quicklogUrl: quicklogUrl
     }
   },
   methods: {
