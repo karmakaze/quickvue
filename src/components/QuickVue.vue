@@ -1,7 +1,7 @@
 <template>
   <div class="quick-vue">
     <div class="quickvue-filters">
-      <h2>QuickVue</h2>&nbsp;&nbsp;&nbsp;&nbsp;
+      <h2>{{ title() }}</h2>&nbsp;&nbsp;&nbsp;&nbsp;
       <span>project: <input v-model="projectId" size="6"/></span>&nbsp;
       <span>quicklog url: <input v-model="quicklogUrl" size="30"/></span>&nbsp;
       <span>tag: <input v-model="tag" size="45"/></span><span v-on:click="selectTag('')"><img class="delete-back" src="/static/images/delete-back.png"></span>&nbsp;&nbsp;
@@ -32,6 +32,9 @@ export default {
     }
   },
   methods: {
+    title() {
+      return window.location.hostname === 'quicklog.io' ? 'Quicklog.io' : 'QuickVue'
+    },
     selectTag(tag) {
       this.tag = tag
     },
