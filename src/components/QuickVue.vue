@@ -15,7 +15,7 @@
 <script>
 export default {
   data () {
-    let quicklogUrl = 'http://' + window.location.hostname +":8124"
+    let quicklogUrl = 'http://' + window.location.hostname + ':8124'
     let nameParts = window.location.hostname.split('.')
     if (nameParts.length === 2) {
       quicklogUrl = 'https://api.' + window.location.hostname

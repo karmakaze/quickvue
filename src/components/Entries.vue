@@ -2,7 +2,7 @@
   <div class="entries">
     <table>
       <tr>
-        <th colspan="7"></th>
+        <th :colspan="5 + sources.length"></th>
         <th colspan="2" v-on:click="moreOlder()">More Older</th>
       </tr>
       <tr class="heading-row">
@@ -31,9 +31,8 @@
 
       <tr class="heading-row">
         <th>Published UTC</th>
-        <th>Source</th>
         <th>Actor</th>
-        <th>Type</th>
+        <th v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
         <th>Object</th>
         <th>Target</th>
         <th>Context</th>
@@ -41,7 +40,7 @@
         <th>span-id</th>
       </tr>
       <tr>
-        <th colspan="7"></th>
+        <th :colspan="5 + sources.length"></th>
         <th colspan="2" v-on:click="moreRecent()">More Recent</th>
       </tr>
     </table>
