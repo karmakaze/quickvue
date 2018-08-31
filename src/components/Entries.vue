@@ -18,7 +18,7 @@
 
       <template v-for="entry of entries">
         <tr class="data-row" :key="entry.seq">
-          <td>{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
+          <td :style="spanColor(entry.span_id)">{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
           <td>{{ entry.actor }}</td>
           <td v-for="source in sources" :key="source" :style="entryStyle(entry, source)">
             {{ source === entry.source ? entry.type : '' }}
