@@ -20,12 +20,14 @@
         <tr class="data-row" :key="entry.seq">
           <td>{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
           <td>{{ entry.actor }}</td>
-          <td v-for="source in sources" :key="source">{{ source === entry.source ? entry.type : '' }}</td>
-          <td>{{ entry.object }}</td>
-          <td>{{ entry.target }}</td>
-          <td>{{ JSON.stringify(entry.context) }}</td>
-          <td v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
-          <td v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
+          <td v-for="source in sources" :key="source" :style="entryStyle(entry, source)">
+            {{ source === entry.source ? entry.type : '' }}
+          </td>
+          <td :style="entryStyle(entry)">{{ entry.object }}</td>
+          <td :style="entryStyle(entry)">{{ entry.target }}</td>
+          <td :style="entryStyle(entry)">{{ JSON.stringify(entry.context) }}</td>
+          <td :style="spanColor(entry.trace_id)" v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
+          <td :style="spanColor(entry.span_id)" v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
         </tr>
       </template>
 
@@ -48,6 +50,7 @@
 </template>
 
 <script>
+import { colorHash, hueHash, saturationHash, valueHash } from '../util/colors.js'
 import { getCookie, setCookie } from '../util/cookies.js'
 
 export default {
@@ -167,6 +170,24 @@ export default {
         cookie.split(',').forEach(serviceId => (filterServiceIds[serviceId] = true))
       }
       return filterServiceIds
+    },
+    entryStyle(entry, source) {
+      if (source && source !== entry.source) {
+        return {}
+      }
+      return {
+        'background': colorHash(entry.source, 0.125, 0.999)
+      }
+    },
+    spanColor(spanId) {
+      if (!spanId) {
+        return {}
+      }
+      let saturation = 0.5 + 0.5 * saturationHash(spanId)
+      let value = 0.2 + 0.7 * valueHash(spanId)
+      return {
+        'color': colorHash(spanId, saturation, value)
+      }
     }
   }
 }
