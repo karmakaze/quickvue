@@ -17,10 +17,8 @@ export default {
   data () {
     let quicklogUrl = 'http://' + window.location.hostname + ':8124'
     let nameParts = window.location.hostname.split('.')
-    if (nameParts.length === 2) {
-      quicklogUrl = 'https://api.' + window.location.hostname
-    } else if (nameParts.length > 2) {
-      quicklogUrl = 'https://quicklog.' + nameParts.slice(1).join('.')
+    if (nameParts.length >= 2) {
+      quicklogUrl = 'https://api.quicklog.io'
     }
     let tag = this.$route.params.tag || ''
     let traceId = this.$route.params.traceId || ''
