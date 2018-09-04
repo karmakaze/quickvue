@@ -38,7 +38,6 @@ export default {
       this.traceOrSpanId = ''
     },
     selectTraceOrSpanId(traceOrSpanId) {
-      this.tag = ''
       this.traceOrSpanId = traceOrSpanId
     }
   }
