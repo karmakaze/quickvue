@@ -7,8 +7,8 @@
         <th width="6%" rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Source</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Type</th>
-        <th width="9%" rowspan="2">Object</th>
-        <th width="9%" rowspan="2">Target</th>
+        <th width="11%" rowspan="2">Object</th>
+        <th width="11%" rowspan="2">Target</th>
         <th rowspan="2">Context</th>
         <th width="12%" colspan="2" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
       </tr>
@@ -176,6 +176,7 @@ export default {
         c += 'd0'
       }
       return {
+        'overflow-wrap': 'break-word',
         'background': c
       }
     },
