@@ -3,12 +3,12 @@
     <table>
       <tr>
         <th width="6%" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
-        <th width="6%" rowspan="2">Actor</th>
+        <th width="9%" rowspan="2">Actor</th>
         <th width="6%" rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Source</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Type</th>
-        <th width="6%" rowspan="2">Object</th>
-        <th width="6%" rowspan="2">Target</th>
+        <th width="9%" rowspan="2">Object</th>
+        <th width="9%" rowspan="2">Target</th>
         <th rowspan="2">Context</th>
         <th width="12%" colspan="2" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
       </tr>
@@ -18,18 +18,18 @@
         <th style="padding-top: 3px">span-id</th>
       </tr>
 
-      <template v-for="entry of entries">
+      <template v-for="(entry, i) of entries">
         <tr class="data-row" :key="entry.seq">
           <td :style="spanColor(entry.span_id)">{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
           <td>{{ entry.actor }}</td>
           <td v-if="useSourceColumns()" v-for="source in sources" :key="source" :style="entryStyle(entry, source)">
             {{ source === entry.source ? entry.type : '' }}
           </td>
-          <td v-if="!useSourceColumns()" :style="entryStyle(entry)">{{ entry.source }}</td>
-          <td v-if="!useSourceColumns()" :style="entryStyle(entry)">{{ entry.type }}</td>
-          <td :style="entryStyle(entry)" v-on:click="clickTaggable(entry.object)">{{ entry.object }}</td>
-          <td :style="entryStyle(entry)" v-on:click="clickTaggable(entry.target)">{{ entry.target }}</td>
-          <td :style="entryContextStyle(entry)">{{ JSON.stringify(entry.context) }}</td>
+          <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 !== 0)">{{ entry.source }}</td>
+          <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 !== 0)">{{ entry.type }}</td>
+          <td :style="entryStyle(entry, '', i%2 !== 0)" v-on:click="clickTaggable(entry.object)">{{ entry.object }}</td>
+          <td :style="entryStyle(entry, '', i%2 !== 0)" v-on:click="clickTaggable(entry.target)">{{ entry.target }}</td>
+          <td :style="entryStyle(entry, '', i%2 !== 0)">{{ JSON.stringify(entry.context) }}</td>
           <td :style="spanColor(entry.trace_id)" v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
           <td :style="spanColor(entry.span_id)" v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
         </tr>
@@ -167,19 +167,17 @@ export default {
       }
       return filterServiceIds
     },
-    entryStyle(entry, source) {
+    entryStyle(entry, source, isOddRow) {
       if (source && source !== entry.source) {
         return {}
       }
-      return {
-        'background': colorHash(entry.source, 0.125, 0.999)
+      let c = colorHash(entry.source, 0.125, 0.999)
+      if (isOddRow) {
+        c += 'd0'
       }
-    },
-    entryContextStyle(entry, source) {
-      let style = this.entryStyle(entry, source)
-      style['overflow-wrap'] = 'break-word'
-      console.log(`entryContextStyle: ${JSON.stringify(style)}`)
-      return style
+      return {
+        'background': c
+      }
     },
     spanColor(spanId) {
       if (!spanId) {
