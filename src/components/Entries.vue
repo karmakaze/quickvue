@@ -2,21 +2,20 @@
   <div class="entries">
     <table>
       <tr>
-        <th v-if="useSourceColumns()" :colspan="5 + sources.length"></th>
-        <th v-if="!useSourceColumns()" :colspan="7"></th>
-        <th colspan="2" v-on:click="moreOlder()">More Older</th>
+        <th width="6%" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
+        <th width="6%" rowspan="2">Actor</th>
+        <th width="6%" rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
+        <th width="6%" rowspan="2" v-if="!useSourceColumns()">Source</th>
+        <th width="6%" rowspan="2" v-if="!useSourceColumns()">Type</th>
+        <th width="6%" rowspan="2">Object</th>
+        <th width="6%" rowspan="2">Target</th>
+        <th rowspan="2">Context</th>
+        <th width="12%" colspan="2" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
       </tr>
-      <tr class="heading-row">
-        <th>Published UTC</th>
-        <th>Actor</th>
-        <th v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
-        <th v-if="!useSourceColumns()">Source</th>
-        <th v-if="!useSourceColumns()">Type</th>
-        <th>Object</th>
-        <th>Target</th>
-        <th>Context</th>
-        <th>trace-id</th>
-        <th>span-id</th>
+      <tr>
+        <th style="padding-top: 3px">Published UTC</th>
+        <th style="padding-top: 3px">trace-id</th>
+        <th style="padding-top: 3px">span-id</th>
       </tr>
 
       <template v-for="entry of entries">
@@ -30,28 +29,27 @@
           <td v-if="!useSourceColumns()" :style="entryStyle(entry)">{{ entry.type }}</td>
           <td :style="entryStyle(entry)" v-on:click="clickTaggable(entry.object)">{{ entry.object }}</td>
           <td :style="entryStyle(entry)" v-on:click="clickTaggable(entry.target)">{{ entry.target }}</td>
-          <td :style="entryStyle(entry)">{{ JSON.stringify(entry.context) }}</td>
+          <td :style="entryContextStyle(entry)">{{ JSON.stringify(entry.context) }}</td>
           <td :style="spanColor(entry.trace_id)" v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
           <td :style="spanColor(entry.span_id)" v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
         </tr>
       </template>
 
-      <tr class="heading-row">
-        <th>Published UTC</th>
-        <th>Actor</th>
-        <th v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
-        <th v-if="!useSourceColumns()">Source</th>
-        <th v-if="!useSourceColumns()">Type</th>
-        <th>Object</th>
-        <th>Target</th>
-        <th>Context</th>
-        <th>trace-id</th>
-        <th>span-id</th>
+      <tr>
+        <th style="padding-top: 3px">Published UTC</th>
+        <th rowspan="2">Actor</th>
+        <th rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
+        <th rowspan="2" v-if="!useSourceColumns()">Source</th>
+        <th rowspan="2" v-if="!useSourceColumns()">Type</th>
+        <th rowspan="2">Object</th>
+        <th rowspan="2">Target</th>
+        <th rowspan="2">Context</th>
+        <th style="padding-top: 3px">trace-id</th>
+        <th style="padding-top: 3px">span-id</th>
       </tr>
       <tr>
-        <th v-if="useSourceColumns()" :colspan="5 + sources.length"></th>
-        <th v-if="!useSourceColumns()" :colspan="7"></th>
-        <th colspan="2" v-on:click="moreRecent()">More Recent</th>
+        <th v-on:click="moreRecent()" style="padding-top: 3px">More Recent</th>
+        <th colspan="2" v-on:click="moreRecent()" style="padding-top: 3px">More Recent</th>
       </tr>
     </table>
   </div>
@@ -59,7 +57,7 @@
 
 <script>
 import { colorHash, saturationHash, valueHash } from '../util/colors.js'
-import { getCookie, setCookie } from '../util/cookies.js'
+import { getCookie } from '../util/cookies.js'
 
 export default {
   props: ['quicklogUrl', 'projectId', 'tag', 'traceOrSpanId'],
@@ -161,24 +159,6 @@ export default {
     moreRecent() {
       this.load(50)
     },
-    toggle(serviceIdChecked) {
-      if (serviceIdChecked.serviceId === '*') {
-        if (serviceIdChecked.checked) {
-          let filterServiceIds = {}
-          this.services.forEach(service => (filterServiceIds[service.id] = serviceIdChecked.checked))
-          this.filterServiceIds = filterServiceIds
-        } else {
-          this.filterServiceIds = {}
-        }
-      } else {
-        this.$set(this.filterServiceIds, serviceIdChecked.serviceId, serviceIdChecked.checked)
-      }
-      let checkedServiceIds = Object.entries(this.filterServiceIds).filter(e => e[1]).map(e => e[0])
-      setCookie('filterServiceIds', checkedServiceIds.join(','))
-      if (checkedServiceIds.length === 0) {
-        this.filterServiceIds = {}
-      }
-    },
     parseCookie() {
       let filterServiceIds = {}
       let cookie = getCookie('filterServiceIds')
@@ -194,6 +174,12 @@ export default {
       return {
         'background': colorHash(entry.source, 0.125, 0.999)
       }
+    },
+    entryContextStyle(entry, source) {
+      let style = this.entryStyle(entry, source)
+      style['overflow-wrap'] = 'break-word'
+      console.log(`entryContextStyle: ${JSON.stringify(style)}`)
+      return style
     },
     spanColor(spanId) {
       if (!spanId) {
@@ -218,12 +204,17 @@ a {
   text-decoration: none;
   color: #400040;
 }
+.entries {
+  width: 100%;
+}
 table {
+  table-layout: fixed;
+  width: 100vw;
   border: 1px solid #eeeeee;
   border-spacing: 0px;
   border-collapse: collapse;
 }
-tr.heading-row { background: #ccffff; }
+.heading-row { background: #ccffff; }
 tr.data-row:nth-child(even) { background: #ffffff; }
 tr.data-row:nth-child(odd) { background: #f0f0f0; }
 tr.data-row {
