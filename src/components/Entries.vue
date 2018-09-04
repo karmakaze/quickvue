@@ -4,7 +4,7 @@
       <tr>
         <th width="6%" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
         <th width="9%" rowspan="2">Actor</th>
-        <th width="6%" rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
+        <th width="110" rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Source</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Type</th>
         <th width="11%" rowspan="2">Object</th>
