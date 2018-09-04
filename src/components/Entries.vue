@@ -2,13 +2,16 @@
   <div class="entries">
     <table>
       <tr>
-        <th :colspan="5 + sources.length"></th>
+        <th v-if="useSourceColumns()" :colspan="5 + sources.length"></th>
+        <th v-if="!useSourceColumns()" :colspan="7"></th>
         <th colspan="2" v-on:click="moreOlder()">More Older</th>
       </tr>
       <tr class="heading-row">
         <th>Published UTC</th>
         <th>Actor</th>
-        <th v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
+        <th v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
+        <th v-if="!useSourceColumns()">Source</th>
+        <th v-if="!useSourceColumns()">Type</th>
         <th>Object</th>
         <th>Target</th>
         <th>Context</th>
@@ -20,11 +23,13 @@
         <tr class="data-row" :key="entry.seq">
           <td :style="spanColor(entry.span_id)">{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
           <td>{{ entry.actor }}</td>
-          <td v-for="source in sources" :key="source" :style="entryStyle(entry, source)">
+          <td v-if="useSourceColumns()" v-for="source in sources" :key="source" :style="entryStyle(entry, source)">
             {{ source === entry.source ? entry.type : '' }}
           </td>
-          <td :style="entryStyle(entry)">{{ entry.object }}</td>
-          <td :style="entryStyle(entry)">{{ entry.target }}</td>
+          <td v-if="!useSourceColumns()" :style="entryStyle(entry)">{{ entry.source }}</td>
+          <td v-if="!useSourceColumns()" :style="entryStyle(entry)">{{ entry.type }}</td>
+          <td :style="entryStyle(entry)" v-on:click="clickTaggable(entry.object)">{{ entry.object }}</td>
+          <td :style="entryStyle(entry)" v-on:click="clickTaggable(entry.target)">{{ entry.target }}</td>
           <td :style="entryStyle(entry)">{{ JSON.stringify(entry.context) }}</td>
           <td :style="spanColor(entry.trace_id)" v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
           <td :style="spanColor(entry.span_id)" v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
@@ -34,7 +39,9 @@
       <tr class="heading-row">
         <th>Published UTC</th>
         <th>Actor</th>
-        <th v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
+        <th v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
+        <th v-if="!useSourceColumns()">Source</th>
+        <th v-if="!useSourceColumns()">Type</th>
         <th>Object</th>
         <th>Target</th>
         <th>Context</th>
@@ -42,7 +49,8 @@
         <th>span-id</th>
       </tr>
       <tr>
-        <th :colspan="5 + sources.length"></th>
+        <th v-if="useSourceColumns()" :colspan="5 + sources.length"></th>
+        <th v-if="!useSourceColumns()" :colspan="7"></th>
         <th colspan="2" v-on:click="moreRecent()">More Recent</th>
       </tr>
     </table>
@@ -50,7 +58,7 @@
 </template>
 
 <script>
-import { colorHash, hueHash, saturationHash, valueHash } from '../util/colors.js'
+import { colorHash, saturationHash, valueHash } from '../util/colors.js'
 import { getCookie, setCookie } from '../util/cookies.js'
 
 export default {
@@ -82,6 +90,14 @@ export default {
     }
   },
   methods: {
+    useSourceColumns() {
+      return this.tag || this.traceOrSpanId
+    },
+    clickTaggable(value) {
+      if (/^[-:a-z0-9]+$/.test(value) && !/:.*:/.test(value)) {
+        this.$emit('selectTag', value)
+      }
+    },
     load(dirCount) {
       let entries = this.entries
       let xhr = new XMLHttpRequest()
@@ -99,7 +115,7 @@ export default {
           }
           url += '&count=' + dirCount
         }
-      } else if (this.tag || this.traceOrSpandId) {
+      } else if (this.tag || this.traceOrSpanId) {
           url += '&count=1000'
       }
 

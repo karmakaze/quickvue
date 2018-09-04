@@ -8,7 +8,7 @@
       <span>trace/span: <input v-model="traceOrSpanId" size="23"/></span><span v-on:click="selectTraceOrSpanId('')"><img class="delete-back" src="/static/images/delete-back.png"></span>
     </div>
     <entries :projectId="projectId" :tag="tag" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"
-      @selectTraceId="selectTraceOrSpanId($event)" @selectSpanId="selectTraceOrSpanId($event)"/>
+      @selectTag="selectTag($event)" @selectTraceId="selectTraceOrSpanId($event)" @selectSpanId="selectTraceOrSpanId($event)"/>
   </div>
 </template>
 
@@ -35,10 +35,11 @@ export default {
     },
     selectTag(tag) {
       this.tag = tag
+      this.traceOrSpanId = ''
     },
     selectTraceOrSpanId(traceOrSpanId) {
-      this.traceOrSpanId = traceOrSpanId
       this.tag = ''
+      this.traceOrSpanId = traceOrSpanId
     }
   }
 }

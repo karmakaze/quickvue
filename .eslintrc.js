@@ -28,6 +28,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'indent': 'off',
     'quotes': 0,
-    'space-before-function-paren': 0
+    'space-before-function-paren': 0,
+    'yoda': ['warn', 'never', { 'onlyEquality': true } ]
   }
 }
