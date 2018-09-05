@@ -1,8 +1,9 @@
 <template>
   <div class="entries">
     <table>
-      <tr>
-        <th width="6%" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
+      <tr :style="showMoreOlder() ? {} : {height: '3em'}">
+        <th width="6%" v-if="showMoreOlder()" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
+        <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">Published UTC</th>
         <th width="7%" rowspan="2">Actor</th>
         <th width="110" rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Source</th>
@@ -10,17 +11,23 @@
         <th width="8%" rowspan="2">Object</th>
         <th width="8%" rowspan="2">Target</th>
         <th rowspan="2">Context</th>
-        <th width="12%" colspan="2" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
+        <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">trace</th>
+        <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">span</th>
+        <th width="12%" colspan="2" v-if="showMoreOlder()" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
       </tr>
       <tr>
-        <th style="padding-top: 3px">Published UTC</th>
-        <th style="padding-top: 3px">trace-id</th>
-        <th style="padding-top: 3px">span-id</th>
+        <th v-if="showMoreOlder()" style="padding-top: 3px">Published UTC</th>
+        <th v-if="showMoreOlder()" style="padding-top: 3px">trace</th>
+        <th v-if="showMoreOlder()" style="padding-top: 3px">span</th>
+      </tr>
+
+      <tr>
+        <td :colspan="9" v-if="!entries.length" style="height: 10em" align="center"><h3>No matching entries.</h3></td>
       </tr>
 
       <template v-for="(entry, i) of entries">
         <tr class="data-row" :key="entry.seq">
-          <td :style="spanColor(entry.span_id)">{{ entry.published.substring(5, 23).replace('T', ' ') }}</td>
+          <td :style="spanColor(entry.span_id)">{{ entry.published.replace('Z', '00').substring(5, 23).replace('T', ' ') }}</td>
           <td>{{ entry.actor }}</td>
           <td v-if="useSourceColumns()" v-for="source in sources" :key="source" :style="entryStyle(entry, source)">
             {{ source === entry.source ? entry.type : '' }}
@@ -35,8 +42,9 @@
         </tr>
       </template>
 
-      <tr>
-        <th style="padding-top: 3px">Published UTC</th>
+      <template v-if="entries.length">
+      <tr :style="showMoreRecent() ? {} : {height: '3em'}">
+        <th :rowspan="showMoreRecent() ? 1 : 2" style="padding-top: 3px">Published UTC</th>
         <th rowspan="2">Actor</th>
         <th rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
         <th rowspan="2" v-if="!useSourceColumns()">Source</th>
@@ -44,13 +52,14 @@
         <th rowspan="2">Object</th>
         <th rowspan="2">Target</th>
         <th rowspan="2">Context</th>
-        <th style="padding-top: 3px">trace-id</th>
-        <th style="padding-top: 3px">span-id</th>
+        <th :rowspan="showMoreRecent() ? 1 : 2" style="padding-top: 3px">trace</th>
+        <th :rowspan="showMoreRecent() ? 1 : 2" style="padding-top: 3px">span</th>
       </tr>
-      <tr>
+      <tr v-if="showMoreRecent()">
         <th v-on:click="moreRecent()" style="padding-top: 3px">More Recent</th>
         <th colspan="2" v-on:click="moreRecent()" style="padding-top: 3px">More Recent</th>
       </tr>
+      </template>
     </table>
   </div>
 </template>
@@ -67,7 +76,9 @@ export default {
   data () {
     return {
       sources: [],
-      entries: []
+      entries: [],
+      loadOlder: true,
+      loadNewer: true
     }
   },
   watch: {
@@ -89,7 +100,13 @@ export default {
   },
   methods: {
     useSourceColumns() {
-      return this.tag || this.traceOrSpanId
+      return (this.tag || this.traceOrSpanId) && this.entries.length
+    },
+    showMoreOlder() {
+      return this.loadOlder && this.entries.length
+    },
+    showMoreRecent() {
+      return this.loadNewer && this.entries.length
     },
     clickTaggable(value) {
       if (/^[-:a-z0-9]+$/.test(value) && !/:.*:/.test(value)) {
@@ -104,12 +121,12 @@ export default {
       if (isFinite(dirCount)) {
         if (dirCount < 0) {
           if (entries.length > 0) {
-            url += '&published=%5B,' + entries[0].published + '%5D'
+            url += '&seq=%5B,' + entries[0].seq + '%5D'
           }
           url += '&count=' + (-dirCount)
         } else {
           if (entries.length > 0) {
-            url += '&published=%5B' + entries[entries.length - 1].published + ',%5D'
+            url += '&seq=%5B' + entries[entries.length - 1].seq + ',%5D'
           }
           url += '&count=' + dirCount
         }
@@ -124,6 +141,9 @@ export default {
           if (data && data.data && data.data.length) {
             if (isFinite(dirCount)) {
               if (dirCount < 0) {
+                if (data.data.length < -dirCount) {
+                  this.loadOlder = false
+                }
                 if (data.data[data.data.length - 1].seq === entries[0].seq) {
                   this.entries = data.data.concat(entries.slice(1))
                 } else {
@@ -138,6 +158,12 @@ export default {
               }
             } else {
               this.entries = data.data
+              if (this.tag || this.traceOrSpanId) {
+                if (this.entries.length < 1000) {
+                  this.loadOlder = false
+                  this.loadNewer = false
+                }
+              }
             }
           } else {
             this.entries = []
@@ -149,6 +175,14 @@ export default {
             }
           })
           this.sources = sources
+          entries = this.entries
+          if (entries.length) {
+            let now = new Date()
+            let ageLast = (now - Date.parse(entries[entries.length - 1].published)) / 1000
+            if (ageLast > 600) {
+              this.showLoadNewer = false
+            }
+          }
         }
       }
       xhr.send()
