@@ -4,7 +4,7 @@
       <h2>{{ title() }}</h2>&nbsp;&nbsp;&nbsp;&nbsp;
       <span>project: <input v-model="projectId" size="6"/></span>&nbsp;
       <span>quicklog url: <input v-model="quicklogUrl" size="30"/></span>&nbsp;
-      <span>tag: <input v-model="tag" size="52"/></span><span v-on:click="selectTag('')"><img class="delete-back" src="/static/images/delete-back.png"></span>&nbsp;&nbsp;
+      <span>tag: <input v-model="tag" size="60"/></span><span v-on:click="selectTag('')"><img class="delete-back" src="/static/images/delete-back.png"></span>&nbsp;&nbsp;
       <span>trace/span: <input v-model="traceOrSpanId" size="23"/></span><span v-on:click="selectTraceOrSpanId('')"><img class="delete-back" src="/static/images/delete-back.png"></span>
     </div>
     <entries :projectId="projectId" :tag="tag" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"
