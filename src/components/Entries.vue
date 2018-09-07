@@ -8,8 +8,8 @@
         <th width="110" rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Source</th>
         <th width="6%" rowspan="2" v-if="!useSourceColumns()">Type</th>
-        <th width="8%" rowspan="2">Object</th>
-        <th width="8%" rowspan="2">Target</th>
+        <th width="10%" rowspan="2">Object</th>
+        <th width="10%" rowspan="2">Target</th>
         <th rowspan="2">Context</th>
         <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">trace</th>
         <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">span</th>
