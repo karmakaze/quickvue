@@ -40,19 +40,19 @@ function hexByte(value) {
 
 function hashReal(value) {
   let hash = stringHash(value)
-  return (hash % 104729) / 104729
+  return (hash % 7919) / 7919
 }
 
 function stringHash(value) {
-  let hash = 0
+  let hash = 2166136261
   for (let i = 0; i < value.length; i++) {
-    hash *= 31
-    hash += value.charCodeAt(i)
-    if (hash >= 2147483648) {
-      hash -= 2147483648
-    }
+    hash = hash ^ value.charCodeAt(i)
+    hash = hash * 16777619
   }
-  return hash
+  /* JavaScript does bitwise operations (like XOR, above) on 32-bit signed
+   * integers. Since we want the results to be always positive, convert the
+   * signed int to an unsigned by doing an unsigned bitshift. */
+  return hash >>> 0
 }
 
 // The following source code up to and excluding the 'export' taken from
