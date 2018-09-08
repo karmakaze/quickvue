@@ -32,11 +32,11 @@
           <td v-if="useSourceColumns()" v-for="source in sources" :key="source" :style="entryStyle(entry, source)">
             {{ source === entry.source ? entry.type : '' }}
           </td>
-          <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 !== 0)">{{ entry.source }}</td>
-          <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 !== 0)">{{ entry.type }}</td>
-          <td :style="entryStyle(entry, '', i%2 !== 0)" v-on:click="clickTaggable(entry.object)">{{ entry.object }}</td>
-          <td :style="entryStyle(entry, '', i%2 !== 0)" v-on:click="clickTaggable(entry.target)">{{ entry.target }}</td>
-          <td :style="entryStyle(entry, '', i%2 !== 0)">{{ JSON.stringify(entry.context) }}</td>
+          <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 === 0)">{{ entry.source }}</td>
+          <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 === 0)">{{ entry.type }}</td>
+          <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickTaggable(entry.object)">{{ entry.object }}</td>
+          <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickTaggable(entry.target)">{{ entry.target }}</td>
+          <td :style="entryStyle(entry, '', i%2 === 0)">{{ JSON.stringify(entry.context) }}</td>
           <td :style="spanColor(entry.trace_id)" v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
           <td :style="spanColor(entry.span_id)" v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
         </tr>
@@ -201,12 +201,12 @@ export default {
       }
       return filterServiceIds
     },
-    entryStyle(entry, source, isOddRow) {
+    entryStyle(entry, source, isEvenRow) {
       if (source && source !== entry.source) {
         return {}
       }
       let c = colorHash(entry.source, 0.125, 0.999)
-      if (isOddRow) {
+      if (isEvenRow) {
         c += 'd0'
       }
       return {
