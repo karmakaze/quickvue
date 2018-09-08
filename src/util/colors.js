@@ -9,7 +9,7 @@ function colorHash(a, b, c) {
 }
 
 function hueHash(value) {
-  let hh = hashReal(value)
+  let hh = hashReal('h' + value)
   return hh * hh
 }
 
