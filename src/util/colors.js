@@ -10,7 +10,19 @@ function colorHash(a, b, c) {
 
 function hueHash(value) {
   let hh = hashReal('h' + value)
-  return hh * hh
+  if (0.08333333333 < hh && hh <= 0.58333333333) {
+    let v = 1.0 - (0.58333333333 - hh)
+    v = v * v
+    return 0.08333333333 + (v - 0.25) / 1.5
+  } else {
+    if (hh <= 0.08333333333) {
+      hh += 1.0
+    }
+    let v = 0.5 + (1.08333333333 - hh)
+    v = v * v
+    v = 0.58333333333 + (v - 0.25) / 1.5
+    return v >= 1.0 ? v - 1.0 : v
+  }
 }
 
 function saturationHash(value) {
