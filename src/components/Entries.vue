@@ -205,7 +205,8 @@ export default {
       if (source && source !== entry.source) {
         return {}
       }
-      let c = colorHash(entry.source, 0.125, 0.999)
+      let s = 0.1 + 0.1 * saturationHash(entry.source)
+      let c = colorHash(entry.source, s, 0.999)
       if (isEvenRow) {
         c += 'd0'
       }
