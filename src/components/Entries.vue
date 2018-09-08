@@ -29,7 +29,7 @@
         <tr class="data-row" :key="entry.seq">
           <td :style="spanColor(entry.span_id)">{{ entry.published.replace('Z', '00').substring(5, 23).replace('T', ' ') }}</td>
           <td>{{ entry.actor }}</td>
-          <td v-if="useSourceColumns()" v-for="source in sources" :key="source" :style="entryStyle(entry, source)">
+          <td v-if="useSourceColumns()" v-for="source in sources" :key="source" :style="entryStyle(entry, source, i%2 === 0)">
             {{ source === entry.source ? entry.type : '' }}
           </td>
           <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 === 0)">{{ entry.source }}</td>
