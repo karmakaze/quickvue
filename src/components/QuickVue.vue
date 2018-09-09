@@ -34,11 +34,21 @@ export default {
       return window.location.hostname === 'quicklog.io' ? 'Quicklog.io' : 'QuickVue'
     },
     selectTag(tag) {
-      this.tag = tag
+      if (this.tag !== tag) {
+        this.tag = tag
+        if (tag) {
+          this.$router.push({ path: `/tag/${tag}` })
+        } else {
+          this.$router.push({ path: `/` })
+        }
+      }
       this.traceOrSpanId = ''
     },
     selectTraceOrSpanId(traceOrSpanId) {
-      this.traceOrSpanId = traceOrSpanId
+      if (this.traceOrSpanId !== traceOrSpanId) {
+        this.$router.push({ path: `/trace/${traceOrSpanId}` })
+        this.traceOrSpanId = traceOrSpanId
+      }
     }
   }
 }
