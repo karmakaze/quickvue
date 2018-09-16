@@ -11,7 +11,7 @@
         <th width="9%" rowspan="2">Object</th>
         <th width="9%" rowspan="2">Target</th>
         <th rowspan="2">Context</th>
-        <th width="1%" rowspan="2">Repeat</th>
+        <th width="2%" rowspan="2">Repeat</th>
         <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">trace</th>
         <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">span</th>
         <th width="12%" colspan="2" v-if="showMoreOlder()" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
