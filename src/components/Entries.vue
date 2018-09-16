@@ -38,7 +38,7 @@
           <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickTaggable(entry.object)">{{ entry.object }}</td>
           <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickTaggable(entry.target)">{{ entry.target }}</td>
           <td :style="entryStyle(entry, '', i%2 === 0)">{{ JSON.stringify(entry.context) }}</td>
-          <td :style="entryStyle(entry, '', i%2 === 0)">{{ entry.repeated ? entry.repeated : '' }}</td>
+          <td :style="entryStyle(entry, '', i%2 === 0)" align="center">{{ entry.repeated ? entry.repeated : '' }}</td>
           <td :style="spanColor(entry.trace_id)" v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
           <td :style="spanColor(entry.span_id)" v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
         </tr>
