@@ -72,7 +72,7 @@ import { colorHash, saturationHash, valueHash } from '../util/colors.js'
 import { getCookie } from '../util/cookies.js'
 
 export default {
-  props: ['quicklogUrl', 'projectId', 'tag', 'traceOrSpanId'],
+  props: ['quicklogUrl', 'projectId', 'search', 'traceOrSpanId'],
   created () {
     this.load()
   },
@@ -94,7 +94,7 @@ export default {
     'projectId' () {
       this.load()
     },
-    'tag' () {
+    'search' () {
       this.load()
     },
     'traceOrSpanId' () {
@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     useSourceColumns() {
-      return (this.tag || this.traceOrSpanId) && this.entries.length
+      return (this.search || this.traceOrSpanId) && this.entries.length
     },
     showMoreOlder() {
       return this.loadOlder && this.entries.length
@@ -113,14 +113,14 @@ export default {
     },
     clickTaggable(value) {
       if (/^[-:a-z0-9]+$/.test(value) && !/:.*:/.test(value)) {
-        this.$emit('selectTag', value)
+        this.$emit('selectSearch', 'tag:' + value)
       }
     },
     load(dirCount) {
       let entries = this.entries
       let xhr = new XMLHttpRequest()
       // let params = new URLSearchParams(window.location.search.substring(1))
-      let url = this.quicklogUrl + '/entries?project_id=' + this.projectId + '&tag=' + this.tag + '&trace_id=' + this.traceOrSpanId + '&span_id=' + this.traceOrSpanId
+      let url = this.quicklogUrl + '/entries?project_id=' + this.projectId + '&search=' + this.search + '&trace_id=' + this.traceOrSpanId + '&span_id=' + this.traceOrSpanId
       if (isFinite(dirCount)) {
         if (dirCount < 0) {
           if (entries.length > 0) {
@@ -133,7 +133,7 @@ export default {
           }
           url += '&count=' + dirCount
         }
-      } else if (this.tag || this.traceOrSpanId) {
+      } else if (this.search || this.traceOrSpanId) {
           url += '&count=1000'
       }
 
@@ -161,7 +161,7 @@ export default {
               }
             } else {
               this.entries = data.data
-              if (this.tag || this.traceOrSpanId) {
+              if (this.search || this.traceOrSpanId) {
                 if (this.entries.length < 1000) {
                   this.loadOlder = false
                   this.loadNewer = false

@@ -4,11 +4,11 @@
       <h2>{{ title() }}</h2>&nbsp;&nbsp;&nbsp;&nbsp;
       <span>project: <input v-model="projectId" size="6"/></span>&nbsp;
       <span>quicklog url: <input v-model="quicklogUrl" size="30"/></span>&nbsp;
-      <span>tag: <input v-model="tag" size="60"/></span><span v-on:click="selectTag('')"><img class="delete-back" src="/static/images/delete-back.png"></span>&nbsp;&nbsp;
+      <span>search: <input v-model="search" size="60"/></span><span v-on:click="selectSearch('')"><img class="delete-back" src="/static/images/delete-back.png"></span>&nbsp;&nbsp;
       <span>trace/span: <input v-model="traceOrSpanId" size="23"/></span><span v-on:click="selectTraceOrSpanId('')"><img class="delete-back" src="/static/images/delete-back.png"></span>
     </div>
-    <entries :projectId="projectId" :tag="tag" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"
-      @selectTag="selectTag($event)" @selectTraceId="selectTraceOrSpanId($event)" @selectSpanId="selectTraceOrSpanId($event)"/>
+    <entries :projectId="projectId" :search="search" :traceOrSpanId="traceOrSpanId" :quicklogUrl="quicklogUrl"
+      @selectSearch="selectSearch($event)" @selectTraceId="selectTraceOrSpanId($event)" @selectSpanId="selectTraceOrSpanId($event)"/>
   </div>
 </template>
 
@@ -20,11 +20,11 @@ export default {
     if (nameParts.length >= 2) {
       quicklogUrl = 'https://api.quicklog.io'
     }
-    let tag = this.$route.params.tag || ''
+    let search = this.$route.params.search || ''
     let traceId = this.$route.params.traceId || ''
     return {
       projectId: '4',
-      tag: tag,
+      search: search,
       traceOrSpanId: traceId,
       quicklogUrl: quicklogUrl
     }
@@ -33,11 +33,11 @@ export default {
     title() {
       return window.location.hostname === 'quicklog.io' ? 'Quicklog.io' : 'QuickVue'
     },
-    selectTag(tag) {
-      if (this.tag !== tag) {
-        this.tag = tag
-        if (tag) {
-          this.$router.push({ path: `/tag/${tag}` })
+    selectSearch(search) {
+      if (this.search !== search) {
+        this.search = search
+        if (search) {
+          this.$router.push({ path: `/search/${search}` })
         } else {
           this.$router.push({ path: `/` })
         }
