@@ -35,8 +35,8 @@
           </td>
           <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 === 0)">{{ entry.source }}</td>
           <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 === 0)">{{ entry.type }}</td>
-          <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickTaggable(entry.object)">{{ entry.object }}</td>
-          <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickTaggable(entry.target)">{{ entry.target }}</td>
+          <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickSearchable('object', entry.object)">{{ entry.object }}</td>
+          <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickSearchable('target', entry.target)">{{ entry.target }}</td>
           <td :colspan="entry.repeated ? 1 : 2" :style="entryStyle(entry, '', i%2 === 0)">{{ JSON.stringify(entry.context) }}</td>
           <td v-if="entry.repeated" :style="entryStyle(entry, '', i%2 === 0)" align="center">{{ 1 + entry.repeated }}</td>
           <td :style="spanColor(entry.trace_id)" v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
@@ -111,9 +111,11 @@ export default {
     showMoreRecent() {
       return this.loadNewer && this.entries.length
     },
-    clickTaggable(value) {
+    clickSearchable(column, value) {
       if (/^[-:a-z0-9]+$/.test(value) && !/:.*:/.test(value)) {
         this.$emit('selectSearch', 'tag:' + value)
+      } else if (value) {
+        this.$emit('selectSearch', column + ':' + value)
       }
     },
     load(dirCount) {
