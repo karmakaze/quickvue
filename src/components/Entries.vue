@@ -2,19 +2,19 @@
   <div class="entries">
     <table>
       <tr :style="showMoreOlder() ? {} : {height: '3em'}">
-        <th width="6%" v-if="showMoreOlder()" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
-        <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">Published UTC</th>
-        <th width="7%" rowspan="2">Actor</th>
-        <th width="110" rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source">{{ source.replace(/-/g, ' ') }}</th>
-        <th width="6%" rowspan="2" v-if="!useSourceColumns()">Source</th>
-        <th width="6%" rowspan="2" v-if="!useSourceColumns()">Type</th>
-        <th width="9%" rowspan="2">Object</th>
-        <th width="9%" rowspan="2">Target</th>
+        <th v-if="showMoreOlder()" v-on:click="moreOlder()" style="width: 11ch; padding-top: 3px">More Older</th>
+        <th rowspan="2" v-if="!showMoreOlder()" style="width: 11ch; padding-top: 3px">Published UTC</th>
+        <th rowspan="2" style="width: 8em">Actor</th>
+        <th rowspan="2" v-if="useSourceColumns()" v-for="source in sources" :key="source" style="width: 7em">{{ source.replace(/-/g, ' ') }}</th>
+        <th rowspan="2" v-if="!useSourceColumns()" style="width: 8em">Source</th>
+        <th rowspan="2" v-if="!useSourceColumns()" style="width: 9em">Type</th>
+        <th rowspan="2" :style="{ width: useSourceColumns() ? '9%' : '13%'}">Object</th>
+        <th rowspan="2" :style="{ width: useSourceColumns() ? '9%' : '13%'}">Target</th>
         <th rowspan="2">Context</th>
-        <th width="2%" rowspan="2">Repeat</th>
-        <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">trace</th>
-        <th width="6%" rowspan="2" v-if="!showMoreOlder()" style="padding-top: 3px">span</th>
-        <th width="12%" colspan="2" v-if="showMoreOlder()" v-on:click="moreOlder()" style="padding-top: 3px">More Older</th>
+        <th rowspan="2" style="width: 5ch; overflow: hidden">Rep.</th>
+        <th rowspan="2" v-if="!showMoreOlder()" style="width: 5%; padding-top: 3px">trace</th>
+        <th rowspan="2" v-if="!showMoreOlder()" style="width: 5%; padding-top: 3px">span</th>
+        <th colspan="2" v-if="showMoreOlder()" v-on:click="moreOlder()" style="width: 10%; padding-top: 3px">More Older</th>
       </tr>
       <tr>
         <th v-if="showMoreOlder()" style="padding-top: 3px">Published UTC</th>
@@ -29,7 +29,7 @@
       <template v-for="(entry, i) of entries">
         <tr class="data-row" :key="entry.seq">
           <td :style="spanColor(entry.span_id)">{{ entry.published.replace('Z', '00').substring(5, 23).replace('T', ' ') }}</td>
-          <td>{{ entry.actor }}</td>
+          <td style="overflow: hidden; text-overflow: ellipsis">{{ entry.actor }}</td>
           <td v-if="useSourceColumns()" v-for="source in sources" :key="source" :style="entryStyle(entry, source, i%2 === 0)">
             {{ source === entry.source ? entry.type : '' }}
           </td>
@@ -54,7 +54,7 @@
         <th rowspan="2">Object</th>
         <th rowspan="2">Target</th>
         <th rowspan="2">Context</th>
-        <th rowspan="2">Repeat</th>
+        <th rowspan="2" style="overflow: hidden">Rep.</th>
         <th :rowspan="showMoreRecent() ? 1 : 2" style="padding-top: 3px">trace</th>
         <th :rowspan="showMoreRecent() ? 1 : 2" style="padding-top: 3px">span</th>
       </tr>
@@ -227,6 +227,7 @@ export default {
       let saturation = 0.5 + 0.5 * saturationHash(spanId)
       let value = 0.2 + 0.7 * valueHash(spanId)
       return {
+        'overflow': 'hidden',
         'color': colorHash(spanId, saturation, value)
       }
     }
