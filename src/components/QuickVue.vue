@@ -36,19 +36,29 @@ export default {
     selectSearch(search) {
       if (this.search !== search) {
         this.search = search
-        if (search) {
-          this.$router.push({ path: `/search/${search}` })
-        } else {
-          this.$router.push({ path: `/` })
-        }
+        this.traceOrSpanId = ''
+        this.pushRouterPath()
+      } else if (this.traceOrSpanId) {
+        this.traceOrSpanId = ''
+        this.pushRouterPath()
       }
-      this.traceOrSpanId = ''
     },
     selectTraceOrSpanId(traceOrSpanId) {
       if (this.traceOrSpanId !== traceOrSpanId) {
-        this.$router.push({ path: `/trace/${traceOrSpanId}` })
         this.traceOrSpanId = traceOrSpanId
+        this.pushRouterPath()
       }
+    },
+    pushRouterPath() {
+      let path = ''
+      if (this.search) {
+        path += `/search/${this.search}`
+      }
+      if (this.traceOrSpanId) {
+        path += `/trace/${this.traceOrSpanId}`
+      }
+      path = path || '/'
+      this.$router.push({ path: path })
     }
   }
 }
