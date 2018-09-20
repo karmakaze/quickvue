@@ -37,7 +37,7 @@
           <td v-if="!useSourceColumns()" :style="entryStyle(entry, '', i%2 === 0)">{{ entry.type }}</td>
           <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickSearchable('object', entry.object)">{{ entry.object }}</td>
           <td :style="entryStyle(entry, '', i%2 === 0)" v-on:click="clickSearchable('target', entry.target)">{{ entry.target }}</td>
-          <td :colspan="entry.repeated ? 1 : 2" :style="entryStyle(entry, '', i%2 === 0)">{{ JSON.stringify(entry.context) }}</td>
+          <td :colspan="entry.repeated ? 1 : 2" :style="entryStyle(entry, '', i%2 === 0)">{{ entry.context ? JSON.stringify(entry.context) : '' }}</td>
           <td v-if="entry.repeated" :style="entryStyle(entry, '', i%2 === 0)" align="center">{{ 1 + entry.repeated }}</td>
           <td :style="spanColor(entry.trace_id)" v-on:click="$emit('selectTraceId', entry.trace_id)">{{ entry.trace_id }}</td>
           <td :style="spanColor(entry.span_id)" v-on:click="$emit('selectSpanId', entry.span_id)">{{ entry.span_id }}</td>
